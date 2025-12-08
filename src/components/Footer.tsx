@@ -44,7 +44,7 @@ export function Footer() {
               <a href="https://www.vakaalat.in" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:bg-accent hover:text-black transition-all">
                 <Globe className="w-5 h-5" />
               </a>
-              <a href="https://linkedin.com/company/vakaalatone/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:bg-accent hover:text-black transition-all">
+              <a href="https://www.linkedin.com/company/vakaalat-one/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:bg-accent hover:text-black transition-all">
                 <Linkedin className="w-5 h-5" />
               </a>
               <a href="https://www.instagram.com/vakaalatofficial" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:bg-accent hover:text-black transition-all">
