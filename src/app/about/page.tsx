@@ -49,9 +49,9 @@ export default function AboutPage() {
                 className="flex-1 w-full"
             >
                 <div className="aspect-video bg-gradient-to-br from-white/5 to-white/10 rounded-3xl border border-white/10 flex items-center justify-center relative overflow-hidden group">
-                     {/* Placeholder for Mission Image */}
-                    <div className="absolute inset-0 bg-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <span className="text-white/20 font-medium">Mission Visual</span>
+                     <img src="/images/mission.png" alt="Vakaalat Mission" className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                     <span className="relative z-10 text-white font-medium text-lg">Building the Future of Law</span>
                 </div>
             </motion.div>
         </div>

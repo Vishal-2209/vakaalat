@@ -110,8 +110,9 @@ export default function MethodologyPage() {
                     </div>
                 </div>
                 <div className="relative">
-                    <div className="aspect-square rounded-3xl bg-black border border-white/10 p-8 flex items-center justify-center relative overflow-hidden">
-                        <div className="absolute inset-0 bg-accent/5" />
+                    <div className="aspect-square rounded-3xl bg-black border border-white/10 p-8 flex items-center justify-center relative overflow-hidden group">
+                        <img src="/images/core.png" alt="Vakaalat Core" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
                         <div className="text-center relative z-10">
                             <h4 className="text-2xl font-bold text-white mb-2">The Vakaalat Core</h4>
                             <p className="text-white/50 text-sm">Centralized Data & Logic Layer</p>
