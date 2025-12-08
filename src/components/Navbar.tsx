@@ -33,7 +33,7 @@ export function Navbar() {
       </Link>
       
       {/* Desktop Menu */}
-      <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/70">
+      <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-white/70">
         <Link href="/services" className="hover:text-white transition-colors">Services</Link>
         <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>
         <Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link>
@@ -43,14 +43,14 @@ export function Navbar() {
 
       <div className="flex items-center gap-4">
         <Link href="/services">
-            <Button variant="accent" className="hidden md:inline-flex">Get Started</Button>
+            <Button variant="accent" className="hidden lg:inline-flex">Get Started</Button>
         </Link>
         
         {/* Mobile Menu Toggle */}
         <Button 
             variant="ghost" 
             size="sm" 
-            className="md:hidden z-50 relative"
+            className="lg:hidden z-50 relative"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? "Close" : "Menu"}
