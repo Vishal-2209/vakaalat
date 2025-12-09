@@ -21,6 +21,7 @@ export default async function AdminLayout({
             <nav className="flex gap-4 text-sm">
                 <Link href="/admin" className="text-white/70 hover:text-white">Blogs</Link>
                 <Link href="/admin/careers" className="text-white/70 hover:text-white">Careers</Link>
+                <Link href="/admin/settings" className="text-white/70 hover:text-white">Settings</Link>
                 {role === 'SUPER_ADMIN' && (
                     <Link href="/admin/users" className="text-white/70 hover:text-white">Users</Link>
                 )}
