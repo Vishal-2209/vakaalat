@@ -1,6 +1,6 @@
 'use server';
 
-import { supabaseAdmin } from '@/lib/supabase';
+import { getBlogs, saveBlogs, BlogPost } from '@/lib/blog-data';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { isLoggedIn } from './auth';
@@ -24,11 +24,13 @@ export async function createBlog(formData: FormData) {
   const category = formData.get('category') as string;
   const excerpt = formData.get('excerpt') as string;
   const content = formData.get('content') as string;
-  const slug = slugify(title);
   
-  const newPost = {
+  const blogs = await getBlogs();
+  
+  const newPost: BlogPost = {
+    id: Date.now().toString(),
     title,
-    slug,
+    slug: slugify(title),
     excerpt,
     content,
     date: new Date().toISOString().split('T')[0],
@@ -36,12 +38,8 @@ export async function createBlog(formData: FormData) {
     category
   };
 
-  const { error } = await supabaseAdmin.from('blogs').insert([newPost]);
-
-  if (error) {
-    console.error('Error creating blog:', error);
-    throw new Error('Failed to create blog');
-  }
+  blogs.unshift(newPost);
+  await saveBlogs(blogs);
   
   revalidatePath('/blogs');
   redirect('/admin');
@@ -58,22 +56,18 @@ export async function updateBlog(formData: FormData) {
   const excerpt = formData.get('excerpt') as string;
   const content = formData.get('content') as string;
   
-  // We keep the original slug to avoid breaking URLs (or we could update it if requested)
-  const updateData = {
+  const blogs = await getBlogs();
+  const index = blogs.findIndex(b => b.id === id);
+  
+  if (index !== -1) {
+    blogs[index] = {
+      ...blogs[index],
       title,
       category,
       excerpt,
       content,
-  };
-
-  const { error } = await supabaseAdmin
-    .from('blogs')
-    .update(updateData)
-    .eq('id', id);
-
-  if (error) {
-    console.error('Error updating blog:', error);
-    throw new Error('Failed to update blog');
+    };
+    await saveBlogs(blogs);
   }
 
   revalidatePath('/blogs');
@@ -85,15 +79,9 @@ export async function deleteBlog(id: string) {
       throw new Error('Unauthorized');
   }
 
-  const { error } = await supabaseAdmin
-    .from('blogs')
-    .delete()
-    .eq('id', id);
-
-  if (error) {
-    console.error('Error deleting blog:', error);
-    throw new Error('Failed to delete blog');
-  }
+  const blogs = await getBlogs();
+  const filteredBlogs = blogs.filter(b => b.id !== id);
+  await saveBlogs(filteredBlogs);
   
   revalidatePath('/blogs');
 }

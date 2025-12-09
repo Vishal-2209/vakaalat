@@ -1,4 +1,5 @@
-import { supabase } from './supabase';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 export interface Career {
   id: string;
@@ -9,30 +10,27 @@ export interface Career {
   requirements: string;
 }
 
-export async function getCareers(): Promise<Career[]> {
-  const { data, error } = await supabase
-    .from('careers')
-    .select('*');
+const DATA_FILE = path.join(process.cwd(), 'data', 'careers.json');
 
-  if (error) {
-    console.error('Error fetching careers:', error);
+export async function getCareers(): Promise<Career[]> {
+  try {
+    const data = await fs.readFile(DATA_FILE, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
     return [];
   }
-
-  return data as Career[];
 }
 
 export async function getCareerById(id: string): Promise<Career | undefined> {
-  const { data, error } = await supabase
-    .from('careers')
-    .select('*')
-    .eq('id', id)
-    .single();
-
-  if (error) {
-      return undefined;
-  }
-  return data as Career;
+    const careers = await getCareers();
+    return careers.find(c => c.id === id);
 }
 
-// saveCareers is deprecated
+export async function saveCareers(careers: Career[]) {
+    try {
+        await fs.writeFile(DATA_FILE, JSON.stringify(careers, null, 2));
+    } catch (error) {
+        console.error("Failed to save careers", error);
+        throw new Error("Failed to save data");
+    }
+}

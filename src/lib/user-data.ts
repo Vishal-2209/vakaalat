@@ -1,4 +1,5 @@
-import { supabaseAdmin } from './supabase';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 export type UserRole = 'SUPER_ADMIN' | 'ADMIN';
 
@@ -10,7 +11,9 @@ export interface User {
   role: UserRole;
 }
 
-// Fallback credentials if connection fails or table empty (optional, but good for bootstrapping)
+const DATA_FILE = path.join(process.cwd(), 'data', 'users.json');
+
+// Fallback credentials if file missing (Production/GitIgnored)
 const DEFAULT_ADMIN: User = {
     id: '1',
     name: 'Admin',
@@ -20,37 +23,25 @@ const DEFAULT_ADMIN: User = {
 };
 
 export async function getUsers(): Promise<User[]> {
-  const { data, error } = await supabaseAdmin
-    .from('users')
-    .select('*');
-
-  if (error) {
-    console.error('Error fetching users:', error);
-    // If table doesn't exist or connection error, failing back for safety during migration
+  try {
+    const data = await fs.readFile(DATA_FILE, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    // Return default admin if file not found
     return [DEFAULT_ADMIN];
   }
-  
-  if (!data || data.length === 0) {
-      return [DEFAULT_ADMIN];
-  }
-
-  return data as User[];
 }
 
 export async function getUserByEmail(email: string): Promise<User | undefined> {
-  const { data, error } = await supabaseAdmin
-    .from('users')
-    .select('*')
-    .eq('email', email)
-    .single();
-
-  if (error || !data) {
-     // Check default admin fallback
-     if (email === DEFAULT_ADMIN.email) return DEFAULT_ADMIN;
-     return undefined;
-  }
-
-  return data as User;
+  const users = await getUsers();
+  return users.find((user) => user.email === email);
 }
 
-// saveUsers is deprecated
+export async function saveUsers(users: User[]) {
+    try {
+        await fs.writeFile(DATA_FILE, JSON.stringify(users, null, 2));
+    } catch (error) {
+        console.error("Failed to save users", error);
+        throw new Error("Failed to save data");
+    }
+}

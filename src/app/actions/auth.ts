@@ -2,8 +2,7 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { supabaseAdmin } from '@/lib/supabase';
-import { getUserByEmail,  UserRole } from '@/lib/user-data';
+import { getUserByEmail, getUsers, saveUsers, UserRole } from '@/lib/user-data';
 import { revalidatePath } from 'next/cache';
 
 const COOKIE_NAME = 'admin_session';
@@ -88,18 +87,16 @@ export async function createUser(formData: FormData) {
     }
 
     const newUser = {
+        id: Date.now().toString(),
         name,
         email,
         password,
-        role: 'ADMIN' // Default role
+        role: 'ADMIN' as UserRole
     };
 
-    const { error } = await supabaseAdmin.from('users').insert([newUser]);
-
-    if (error) {
-        console.error('Error creating user:', error);
-        return { success: false, message: 'Failed to create user' };
-    }
+    const users = await getUsers();
+    users.push(newUser);
+    await saveUsers(users);
     
     revalidatePath('/admin/users');
     return { success: true };
@@ -115,11 +112,9 @@ export async function deleteUser(id: string) {
          throw new Error('Cannot delete yourself');
     }
 
-    const { error } = await supabaseAdmin.from('users').delete().eq('id', id);
-    if (error) {
-         console.error('Error deleting user:', error);
-         throw new Error('Failed to delete user');
-    }
+    const users = await getUsers();
+    const filteredUsers = users.filter(u => u.id !== id);
+    await saveUsers(filteredUsers);
     
     revalidatePath('/admin/users');
 }
