@@ -46,6 +46,11 @@ export const metadata: Metadata = {
     images: ["/images/mission.png"],
     creator: "@vakaalatofficial", 
   },
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/favicon.ico",
+    apple: "/icon.png",
+  },
   robots: {
     index: true,
     follow: true,
