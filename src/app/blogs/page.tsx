@@ -1,9 +1,7 @@
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/Button';
 import { getBlogs } from '@/lib/blog-data';
-import * as Motion from '@/components/MotionWrapped'; // Client wrapper for motion components
 
 // Re-implementing this page as Server Component by default, 
 // but using client wrapper for animations to mix server data fetching with client interactions.
