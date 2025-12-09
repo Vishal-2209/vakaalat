@@ -2,15 +2,19 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 export interface Settings {
-  webAppUrl: string;
-  androidAppUrl: string;
+  clientWebAppUrl: string;
+  clientAppDownloadUrl: string;
+  lawyerWebAppUrl: string;
+  lawyerAppDownloadUrl: string;
 }
 
 const DATA_FILE = path.join(process.cwd(), 'data', 'settings.json');
 
 const DEFAULT_SETTINGS: Settings = {
-  webAppUrl: 'https://app.vakaalat.in',
-  androidAppUrl: 'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/build_outputs/vakaalat-app-x6krpe/web/KGpGflQw4JmhfWXVUu0L/Vakaalat%20One-release.apk'
+  clientWebAppUrl: 'https://app.vakaalat.in/client',
+  clientAppDownloadUrl: 'https://play.google.com/store/apps/details?id=com.vakaalat.client',
+  lawyerWebAppUrl: 'https://app.vakaalat.in/lawyer',
+  lawyerAppDownloadUrl: 'https://play.google.com/store/apps/details?id=com.vakaalat.lawyer'
 };
 
 export async function getSettings(): Promise<Settings> {

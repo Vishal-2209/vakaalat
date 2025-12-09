@@ -1,9 +1,10 @@
 'use client';
 
+import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { motion } from "framer-motion";
-import { MessageSquare, User, FileText, CheckCircle2, Clock, Lightbulb } from 'lucide-react';
+import { motion, AnimatePresence } from "framer-motion";
+import { MessageSquare, User, FileText, CheckCircle2, Clock, Lightbulb, X, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/Button";
 import type { Settings } from "@/lib/settings-data";
 
@@ -55,11 +56,115 @@ const products = [
   }
 ];
 
+interface RoleSelectionModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  type: 'web' | 'download';
+  settings: Settings;
+}
+
+function RoleSelectionModal({ isOpen, onClose, type, settings }: RoleSelectionModalProps) {
+    if (!isOpen) return null;
+
+    const handleSelect = (role: 'client' | 'lawyer') => {
+        let url = '';
+        if (type === 'web') {
+            url = role === 'client' ? settings.clientWebAppUrl : settings.lawyerWebAppUrl;
+        } else {
+            url = role === 'client' ? settings.clientAppDownloadUrl : settings.lawyerAppDownloadUrl;
+        }
+        window.open(url, '_blank');
+        onClose();
+    };
+
+    return (
+        <AnimatePresence>
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                onClick={onClose}
+            >
+                <motion.div 
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.95, opacity: 0 }}
+                    onClick={(e) => e.stopPropagation()}
+                    className="bg-[#0A0A0A] border border-white/10 rounded-3xl p-8 max-w-md w-full relative overflow-hidden shadow-2xl"
+                >
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50" />
+                    <button 
+                        onClick={onClose}
+                        className="absolute top-4 right-4 p-2 text-white/40 hover:text-white rounded-full hover:bg-white/5 transition-colors"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+
+                    <h2 className="text-2xl font-bold mb-2">Select your Role</h2>
+                    <p className="text-white/60 mb-8">
+                        Are you using Vakaalat as a Client or a Lawyer?
+                    </p>
+
+                    <div className="space-y-4">
+                        <button 
+                            onClick={() => handleSelect('client')}
+                            className="w-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-accent/30 rounded-xl p-4 flex items-center justify-between group transition-all"
+                        >
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                                    <User className="w-6 h-6" />
+                                </div>
+                                <div className="text-left">
+                                    <h3 className="font-semibold text-lg text-white group-hover:text-blue-400 transition-colors">I am a Client</h3>
+                                    <p className="text-sm text-white/40">Looking for legal services</p>
+                                </div>
+                            </div>
+                            <ChevronRight className="w-5 h-5 text-white/20 group-hover:text-blue-400 transition-colors" />
+                        </button>
+
+                        <button 
+                            onClick={() => handleSelect('lawyer')}
+                            className="w-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-accent/30 rounded-xl p-4 flex items-center justify-between group transition-all"
+                        >
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
+                                    <MessageSquare className="w-6 h-6" />
+                                </div>
+                                <div className="text-left">
+                                    <h3 className="font-semibold text-lg text-white group-hover:text-accent transition-colors">I am a Lawyer</h3>
+                                    <p className="text-sm text-white/40">Managing my practice</p>
+                                </div>
+                            </div>
+                            <ChevronRight className="w-5 h-5 text-white/20 group-hover:text-accent transition-colors" />
+                        </button>
+                    </div>
+                </motion.div>
+            </motion.div>
+        </AnimatePresence>
+    );
+}
+
 export function ServicesClient({ settings }: { settings: Settings }) {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<'web' | 'download'>('web');
+
+  const openModal = (type: 'web' | 'download') => {
+      setModalType(type);
+      setModalOpen(true);
+  };
+
   return (
     <main className="min-h-screen bg-background text-foreground overflow-x-hidden pt-24">
       <Navbar />
       
+      <RoleSelectionModal 
+        isOpen={modalOpen} 
+        onClose={() => setModalOpen(false)} 
+        type={modalType}
+        settings={settings}
+      />
+
       <div className="container mx-auto px-6 py-12">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -116,16 +221,12 @@ export function ServicesClient({ settings }: { settings: Settings }) {
                     <div className="mt-auto">
                         {product.id === "law-connect" ? (
                             <div className="flex flex-col gap-3">
-                                <a href={settings.webAppUrl} target="_blank" rel="noopener noreferrer">
-                                   <Button variant="accent" className="w-full">
-                                       Web App
-                                   </Button>
-                                </a>
-                                <a href={settings.androidAppUrl} target="_blank" rel="noopener noreferrer">
-                                   <Button variant="outline" className="w-full">
-                                       Download Android App
-                                   </Button>
-                                </a>
+                                <Button variant="accent" className="w-full" onClick={() => openModal('web')}>
+                                    Web App
+                                </Button>
+                                <Button variant="outline" className="w-full" onClick={() => openModal('download')}>
+                                    Download Android App
+                                </Button>
                             </div>
                         ) : product.cta === "Join Waitlist" ? (
                              <a href="/contact">

@@ -37,40 +37,80 @@ export function SettingsForm({ initialSettings }: { initialSettings: Settings })
         </div>
       )}
 
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-white/70 flex items-center gap-2">
-          <Globe className="w-4 h-4 text-accent" />
-          Web App URL
-        </label>
-        <div className="relative">
-            <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
-            <input 
-              name="webAppUrl" 
-              defaultValue={initialSettings.webAppUrl}
-              required
-              className="w-full bg-black/20 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-accent/50 transition-colors"
-              placeholder="https://app.vakaalat.in"
-            />
+      <div className="space-y-6">
+        <h3 className="text-lg font-semibold text-white/90 border-b border-white/10 pb-2">Client App Settings</h3>
+        
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-white/70 flex items-center gap-2">
+            <Globe className="w-4 h-4 text-accent" />
+            Client Web App URL
+          </label>
+          <div className="relative">
+              <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+              <input 
+                name="clientWebAppUrl" 
+                defaultValue={initialSettings.clientWebAppUrl}
+                required
+                className="w-full bg-black/20 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-accent/50 transition-colors"
+                placeholder="https://app.vakaalat.in/client"
+              />
+          </div>
         </div>
-        <p className="text-xs text-white/40">Link for the &quot;Web App&quot; button on the services page.</p>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-white/70 flex items-center gap-2">
+            <Smartphone className="w-4 h-4 text-accent" />
+            Client App Download URL
+          </label>
+          <div className="relative">
+              <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+              <input 
+                name="clientAppDownloadUrl" 
+                defaultValue={initialSettings.clientAppDownloadUrl}
+                required
+                className="w-full bg-black/20 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-accent/50 transition-colors"
+                placeholder="https://play.google.com/..."
+              />
+          </div>
+        </div>
       </div>
 
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-white/70 flex items-center gap-2">
-          <Smartphone className="w-4 h-4 text-accent" />
-          Android App URL
-        </label>
-        <div className="relative">
-            <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
-            <input 
-              name="androidAppUrl" 
-              defaultValue={initialSettings.androidAppUrl}
-              required
-              className="w-full bg-black/20 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-accent/50 transition-colors"
-              placeholder="https://storage.googleapis.com/..."
-            />
+      <div className="space-y-6 pt-4">
+        <h3 className="text-lg font-semibold text-white/90 border-b border-white/10 pb-2">Lawyer App Settings</h3>
+        
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-white/70 flex items-center gap-2">
+            <Globe className="w-4 h-4 text-accent" />
+            Lawyer Web App URL
+          </label>
+          <div className="relative">
+              <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+              <input 
+                name="lawyerWebAppUrl" 
+                defaultValue={initialSettings.lawyerWebAppUrl}
+                required
+                className="w-full bg-black/20 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-accent/50 transition-colors"
+                placeholder="https://app.vakaalat.in/lawyer"
+              />
+          </div>
         </div>
-        <p className="text-xs text-white/40">Direct download link for the &quot;Download Android App&quot; button.</p>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-white/70 flex items-center gap-2">
+            <Smartphone className="w-4 h-4 text-accent" />
+            Lawyer App Download URL
+          </label>
+          <div className="relative">
+              <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+              <input 
+                name="lawyerAppDownloadUrl" 
+                defaultValue={initialSettings.lawyerAppDownloadUrl}
+                required
+                className="w-full bg-black/20 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-accent/50 transition-colors"
+                placeholder="https://play.google.com/..."
+              />
+          </div>
+        </div>
       </div>
 
       <div className="pt-4">

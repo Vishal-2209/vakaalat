@@ -14,17 +14,21 @@ export async function updateSettingsAction(formData: FormData) {
   // const role = await getCurrentUserRole();
   // if (role !== 'SUPER_ADMIN') ...
 
-  const webAppUrl = formData.get('webAppUrl') as string;
-  const androidAppUrl = formData.get('androidAppUrl') as string;
+  const clientWebAppUrl = formData.get('clientWebAppUrl') as string;
+  const clientAppDownloadUrl = formData.get('clientAppDownloadUrl') as string;
+  const lawyerWebAppUrl = formData.get('lawyerWebAppUrl') as string;
+  const lawyerAppDownloadUrl = formData.get('lawyerAppDownloadUrl') as string;
 
-  if (!webAppUrl || !androidAppUrl) {
+  if (!clientWebAppUrl || !clientAppDownloadUrl || !lawyerWebAppUrl || !lawyerAppDownloadUrl) {
     return { success: false, message: 'All fields are required' };
   }
 
   try {
     await updateSettings({
-      webAppUrl,
-      androidAppUrl
+      clientWebAppUrl,
+      clientAppDownloadUrl,
+      lawyerWebAppUrl,
+      lawyerAppDownloadUrl
     });
 
     revalidatePath('/services');
