@@ -1,18 +1,18 @@
 'use server';
 
-import { getBlogs, saveBlogs, BlogPost } from '@/lib/blog-data';
+import { supabaseAdmin } from '@/lib/supabase';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { isLoggedIn } from './auth';
 
-function slugify(text: string) {
+function slugify(text: string): string {
   return text
     .toString()
     .toLowerCase()
     .trim()
     .replace(/\s+/g, '-')     // Replace spaces with -
-    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
-    .replace(/\-\-+/g, '-');  // Replace multiple - with single -
+    .replace(/[^\w-]+/g, '')  // Remove all non-word chars
+    .replace(/--+/g, '-');    // Replace multiple - with single -
 }
 
 export async function createBlog(formData: FormData) {
@@ -21,25 +21,27 @@ export async function createBlog(formData: FormData) {
   }
 
   const title = formData.get('title') as string;
-  const content = formData.get('content') as string;
-  const excerpt = formData.get('excerpt') as string;
   const category = formData.get('category') as string;
+  const excerpt = formData.get('excerpt') as string;
+  const content = formData.get('content') as string;
+  const slug = slugify(title);
   
-  const blogs = await getBlogs();
-  
-  const newBlog: BlogPost = {
-    id: Date.now().toString(),
+  const newPost = {
     title,
-    slug: slugify(title),
+    slug,
     excerpt,
     content,
     date: new Date().toISOString().split('T')[0],
     author: 'Vakaalat Team',
-    category,
+    category
   };
 
-  blogs.unshift(newBlog); // Add to top
-  await saveBlogs(blogs);
+  const { error } = await supabaseAdmin.from('blogs').insert([newPost]);
+
+  if (error) {
+    console.error('Error creating blog:', error);
+    throw new Error('Failed to create blog');
+  }
   
   revalidatePath('/blogs');
   redirect('/admin');
@@ -52,27 +54,29 @@ export async function updateBlog(formData: FormData) {
 
   const id = formData.get('id') as string;
   const title = formData.get('title') as string;
-  const content = formData.get('content') as string;
-  const excerpt = formData.get('excerpt') as string;
   const category = formData.get('category') as string;
-
-  const blogs = await getBlogs();
-  const index = blogs.findIndex(b => b.id === id);
+  const excerpt = formData.get('excerpt') as string;
+  const content = formData.get('content') as string;
   
-  if (index !== -1) {
-    blogs[index] = {
-      ...blogs[index],
+  // We keep the original slug to avoid breaking URLs (or we could update it if requested)
+  const updateData = {
       title,
-      slug: slugify(title), // Auto-update slug if title changes
-      content,
-      excerpt,
       category,
-    };
-    await saveBlogs(blogs);
-    revalidatePath('/blogs');
-    revalidatePath(`/blogs/${blogs[index].slug}`);
+      excerpt,
+      content,
+  };
+
+  const { error } = await supabaseAdmin
+    .from('blogs')
+    .update(updateData)
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error updating blog:', error);
+    throw new Error('Failed to update blog');
   }
 
+  revalidatePath('/blogs');
   redirect('/admin');
 }
 
@@ -81,9 +85,15 @@ export async function deleteBlog(id: string) {
       throw new Error('Unauthorized');
   }
 
-  let blogs = await getBlogs();
-  blogs = blogs.filter(b => b.id !== id);
-  await saveBlogs(blogs);
+  const { error } = await supabaseAdmin
+    .from('blogs')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting blog:', error);
+    throw new Error('Failed to delete blog');
+  }
   
   revalidatePath('/blogs');
 }

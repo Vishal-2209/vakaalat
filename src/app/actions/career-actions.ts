@@ -1,6 +1,6 @@
 'use server';
 
-import { getCareers, saveCareers, Career } from '@/lib/career-data';
+import { supabaseAdmin } from '@/lib/supabase';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { isLoggedIn } from './auth';
@@ -16,10 +16,7 @@ export async function createCareer(formData: FormData) {
   const description = formData.get('description') as string;
   const requirements = formData.get('requirements') as string;
   
-  const careers = await getCareers();
-  
-  const newCareer: Career = {
-    id: Date.now().toString(),
+  const newCareer = {
     title,
     location,
     type,
@@ -27,8 +24,11 @@ export async function createCareer(formData: FormData) {
     requirements
   };
 
-  careers.unshift(newCareer);
-  await saveCareers(careers);
+  const { error } = await supabaseAdmin.from('careers').insert([newCareer]);
+  
+  if (error) {
+      throw new Error('Failed to create career');
+  }
   
   revalidatePath('/careers');
   redirect('/admin/careers');
@@ -46,22 +46,24 @@ export async function updateCareer(formData: FormData) {
   const description = formData.get('description') as string;
   const requirements = formData.get('requirements') as string;
 
-  const careers = await getCareers();
-  const index = careers.findIndex(c => c.id === id);
-  
-  if (index !== -1) {
-    careers[index] = {
-      ...careers[index],
-      title,
-      location,
-      type,
-      description,
-      requirements
-    };
-    await saveCareers(careers);
-    revalidatePath('/careers');
+  const updateData = {
+    title,
+    location,
+    type,
+    description,
+    requirements
+  };
+
+  const { error } = await supabaseAdmin
+    .from('careers')
+    .update(updateData)
+    .eq('id', id);
+
+  if (error) {
+     throw new Error('Failed to update career');
   }
 
+  revalidatePath('/careers');
   redirect('/admin/careers');
 }
 
@@ -69,10 +71,15 @@ export async function deleteCareer(id: string) {
   if (!(await isLoggedIn())) {
       throw new Error('Unauthorized');
   }
+  
+  const { error } = await supabaseAdmin
+    .from('careers')
+    .delete()
+    .eq('id', id);
 
-  let careers = await getCareers();
-  careers = careers.filter(c => c.id !== id);
-  await saveCareers(careers);
+  if (error) {
+      throw new Error('Failed to delete career');
+  }
   
   revalidatePath('/careers');
 }

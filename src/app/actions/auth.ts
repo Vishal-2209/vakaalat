@@ -2,12 +2,12 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { getUsers, getUserByEmail, saveUsers, User, UserRole } from '@/lib/user-data';
+import { supabaseAdmin } from '@/lib/supabase';
+import { getUserByEmail,  UserRole } from '@/lib/user-data';
 import { revalidatePath } from 'next/cache';
 
 const COOKIE_NAME = 'admin_session';
 
-// Simple session interface
 interface Session {
     userId: string;
     role: UserRole;
@@ -20,11 +20,10 @@ export async function login(formData: FormData) {
 
   const user = await getUserByEmail(email);
 
-  // Simple plain text check as requested
+  // Simple plain text check
   if (user && user.password === password) {
     const cookieStore = await cookies();
     
-    // Store simple JSON session in cookie (In prod, use a signed token or session ID)
     const session: Session = {
         userId: user.id,
         role: user.role,
@@ -81,7 +80,6 @@ export async function createUser(formData: FormData) {
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
-    // Role is ADMIN by default for created users, can be extended if needed
     
     // Check if exists
     const existing = await getUserByEmail(email);
@@ -89,17 +87,19 @@ export async function createUser(formData: FormData) {
         return { success: false, message: 'User with this email already exists' };
     }
 
-    const users = await getUsers();
-    const newUser: User = {
-        id: Date.now().toString(),
+    const newUser = {
         name,
         email,
         password,
-        role: 'ADMIN'
+        role: 'ADMIN' // Default role
     };
 
-    users.push(newUser);
-    await saveUsers(users);
+    const { error } = await supabaseAdmin.from('users').insert([newUser]);
+
+    if (error) {
+        console.error('Error creating user:', error);
+        return { success: false, message: 'Failed to create user' };
+    }
     
     revalidatePath('/admin/users');
     return { success: true };
@@ -115,9 +115,11 @@ export async function deleteUser(id: string) {
          throw new Error('Cannot delete yourself');
     }
 
-    let users = await getUsers();
-    users = users.filter(u => u.id !== id);
-    await saveUsers(users);
+    const { error } = await supabaseAdmin.from('users').delete().eq('id', id);
+    if (error) {
+         console.error('Error deleting user:', error);
+         throw new Error('Failed to delete user');
+    }
     
     revalidatePath('/admin/users');
 }

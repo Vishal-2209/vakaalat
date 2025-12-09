@@ -1,5 +1,4 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { supabase } from './supabase';
 
 export interface BlogPost {
   id: string;
@@ -12,28 +11,33 @@ export interface BlogPost {
   category: string;
 }
 
-const DATA_FILE_PATH = path.join(process.cwd(), 'data', 'blogs.json');
-
 export async function getBlogs(): Promise<BlogPost[]> {
-  try {
-    const data = await fs.readFile(DATA_FILE_PATH, 'utf-8');
-    return JSON.parse(data) as BlogPost[];
-  } catch (error) {
-    console.error('Error reading blogs:', error);
+  const { data, error } = await supabase
+    .from('blogs')
+    .select('*')
+    .order('date', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching blogs:', error);
     return [];
   }
+
+  return data as BlogPost[];
 }
 
 export async function getBlogBySlug(slug: string): Promise<BlogPost | undefined> {
-  const blogs = await getBlogs();
-  return blogs.find((blog) => blog.slug === slug);
+  const { data, error } = await supabase
+    .from('blogs')
+    .select('*')
+    .eq('slug', slug)
+    .single();
+
+  if (error) {
+    // console.error('Error fetching blog by slug:', error);
+    return undefined;
+  }
+
+  return data as BlogPost;
 }
 
-export async function saveBlogs(blogs: BlogPost[]): Promise<void> {
-  try {
-    await fs.writeFile(DATA_FILE_PATH, JSON.stringify(blogs, null, 2), 'utf-8');
-  } catch (error) {
-    console.error('Error writing blogs:', error);
-    throw new Error('Failed to save blog data');
-  }
-}
+// saveBlogs is deprecated/removed as we use direct DB actions now

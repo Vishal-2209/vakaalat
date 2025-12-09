@@ -1,5 +1,4 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { supabase } from './supabase';
 
 export interface Career {
   id: string;
@@ -7,31 +6,33 @@ export interface Career {
   location: string;
   type: string;
   description: string;
-  requirements: string; // HTML supported
+  requirements: string;
 }
 
-const CAREERS_FILE_PATH = path.join(process.cwd(), 'data', 'careers.json');
-
 export async function getCareers(): Promise<Career[]> {
-  try {
-    const data = await fs.readFile(CAREERS_FILE_PATH, 'utf-8');
-    return JSON.parse(data) as Career[];
-  } catch (error) {
-    console.error('Error reading careers:', error);
+  const { data, error } = await supabase
+    .from('careers')
+    .select('*');
+
+  if (error) {
+    console.error('Error fetching careers:', error);
     return [];
   }
+
+  return data as Career[];
 }
 
 export async function getCareerById(id: string): Promise<Career | undefined> {
-  const careers = await getCareers();
-  return careers.find((c) => c.id === id);
+  const { data, error } = await supabase
+    .from('careers')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+      return undefined;
+  }
+  return data as Career;
 }
 
-export async function saveCareers(careers: Career[]): Promise<void> {
-  try {
-    await fs.writeFile(CAREERS_FILE_PATH, JSON.stringify(careers, null, 2), 'utf-8');
-  } catch (error) {
-    console.error('Error writing careers:', error);
-    throw new Error('Failed to save career data');
-  }
-}
+// saveCareers is deprecated
