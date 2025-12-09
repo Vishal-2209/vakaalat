@@ -1,4 +1,6 @@
 {
-  "webAppUrl": "https://app.vakaalat.in",
-  "androidAppUrl": "https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/build_outputs/vakaalat-app-x6krpe/web/KcjcVsNaOCzqP4PIFS4a/Law%20Connect-release.apk"
+  "clientWebAppUrl": "https://app.vakaalat.in",
+  "clientAppDownloadUrl": "https://play.google.com/store/apps/details?id=com.vakaalat.client",
+  "lawyerWebAppUrl": "law-connect-for-lawyers.vakaalat.in",
+  "lawyerAppDownloadUrl": "https://play.google.com/store/apps/details?id=com.vakaalat.lawyer"
 }
