@@ -72,6 +72,7 @@ export function Footer() {
             <h3 className="font-bold text-white mb-6">Resources</h3>
             <ul className="space-y-4 text-white/60">
               <li><Link href="/methodology" className="hover:text-accent transition-colors">Methodology</Link></li>
+              <li><Link href="/blogs" className="hover:text-accent transition-colors">Blogs</Link></li>
               <li><Link href="/privacy" className="hover:text-accent transition-colors">Privacy Policy</Link></li>
               <li><Link href="/terms" className="hover:text-accent transition-colors">Terms of Service</Link></li>
             </ul>
