@@ -22,10 +22,10 @@ const team = [
     bio: "Ensuring seamless operations and user experience."
   },
   {
-    name: "Adv. Arpit Azad",
-    role: "Legal Advisor",
-    image: "AA",
-    bio: "Providing expert legal guidance and industry insights."
+    name: "Lakshya Saraf",
+    role: "Co-Founder",
+    image: "LS",
+    bio: "Strategizing financial growth and stability for long-term success."
   }
 ];
 

@@ -56,30 +56,7 @@ export default function AboutPage() {
             </motion.div>
         </div>
 
-        {/* Stats Section */}
-        <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-32 border-y border-white/10 py-16"
-        >
-            <div className="text-center">
-                <div className="text-5xl font-bold text-white mb-2">500+</div>
-                <div className="text-sm text-accent uppercase tracking-wider">Advocates</div>
-            </div>
-             <div className="text-center">
-                <div className="text-5xl font-bold text-white mb-2">10k+</div>
-                <div className="text-sm text-accent uppercase tracking-wider">Cases Managed</div>
-            </div>
-             <div className="text-center">
-                <div className="text-5xl font-bold text-white mb-2">100%</div>
-                <div className="text-sm text-accent uppercase tracking-wider">Secure</div>
-            </div>
-             <div className="text-center">
-                <div className="text-5xl font-bold text-white mb-2">50+</div>
-                <div className="text-sm text-accent uppercase tracking-wider">Courts</div>
-            </div>
-        </motion.div>
+
 
         {/* Core Values */}
         <div className="mb-32">
