@@ -115,57 +115,105 @@ const getScrapedContent = unstable_cache(
         const html = await response.text();
         const $ = cheerio.load(html);
 
-        // Remove unwanted elements
-        $('script, style, nav, header, footer, iframe, form, .ad, .advertisement, .social-share, .related-articles, #comments, .comments, .comment-section, .report-error, .correction, .author-bio').remove();
+        // 1. Find the best container
+        const containerSelectors = ['article', 'main', '.article-body', '.story-content', '.content', '#content', '.entry-content'];
+        let container = null;
 
-        // Fix relative image paths
-        $('img').each((_, el) => {
-            const src = $(el).attr('src');
-            if (src) {
-                try {
-                    // Resolve relative URLs to absolute
-                    const absoluteUrl = new URL(src, url).toString();
-                    $(el).attr('src', absoluteUrl);
-                    
-                    // Remove lazy loading attributes that might block loading
-                    $(el).removeAttr('loading');
-                    $(el).removeAttr('srcset'); 
-                } catch (e) {
-                    // Ignore invalid URLs
-                }
+        for (const selector of containerSelectors) {
+             const el = $(selector);
+             if (el.length > 0) {
+                 // heuristic: assume the one with most text is the body
+                 let best = el.first();
+                 el.each((_, e) => {
+                    if ($(e).text().length > best.text().length) best = $(e);
+                 });
+                 if (best.text().length > 500) {
+                     container = best;
+                     break;
+                 }
+             }
+        }
+        
+        // Fallback to body if nothing specific found but body has content
+        if (!container && $('body').text().length > 500) {
+             container = $('body');
+        }
+
+        if (!container) return null;
+
+        // 1.5 Super Blacklist
+        const blacklist = [
+            'script', 'style', 'nav', 'header', 'footer', 'iframe', 'form', 
+            '.ad', '.advertisement', 
+            '.social-share', '.share-icon', '.share-wrapper',
+            '.related-articles', '.related-stories', '.read-also', '.also-read', 
+            '#comments', '.comments', '.comment-section', '.comment-heading', '.comment-policy',
+            '.report-error', '.correction', 
+            '.author-bio', '.author-info', '.name-author',
+            '.subscription-widget', '.promoted-content',
+            '.article-publish-date', '.news-tags-article',
+            '.download-icon', '.breadcrumb', '.hide'
+        ];
+        container.find(blacklist.join(', ')).remove();
+
+        // Remove elements by text content (heuristic for "Subscribe", "Updated On")
+        container.find('h2, h3, h4, ul, div').each((_, el) => {
+            const text = $(el).text().toLowerCase();
+            if (text.includes('comments') || text.includes('join the community') || text.includes('subscribe to') || text.includes('updated on')) {
+                $(el).remove();
             }
         });
 
-        // Try to find the main content
-        let content = '';
-        const selectors = ['article', 'main', '.article-body', '.story-content', '.content', '#content'];
-        
-        for (const selector of selectors) {
-            const element = $(selector);
-            if (element.length > 0) {
-                // Get the longest element if multiple match (heuristic)
-                let bestMatch = element.first();
-                element.each((_, el) => {
-                    if ($(el).text().length > bestMatch.text().length) {
-                        bestMatch = $(el);
+        // 2. Fix Images
+        container.find('img').each((_, el) => {
+            const $img = $(el);
+            const src = $img.attr('data-src') || $img.attr('data-url') || $img.attr('data-original') || $img.attr('src');
+            
+            if (src) {
+                try {
+                    const absoluteUrl = new URL(src, url).toString();
+                    $img.attr('src', absoluteUrl);
+                    $img.attr('referrerpolicy', 'no-referrer');
+                    $img.removeAttr('loading');
+                    $img.removeAttr('srcset');
+                    
+                     if (($img.attr('width') && parseInt($img.attr('width')!) < 20) || 
+                        ($img.attr('height') && parseInt($img.attr('height')!) < 20)) {
+                         $img.remove();
                     }
-                });
-                content = bestMatch.html() || '';
-                if (content.length > 500) break; // Good enough match
+                } catch (e) { $img.remove(); }
+            } else {
+                $img.remove();
             }
+        });
+
+        // 3. Unwrap Layout Tags (div, span, section)
+        // Repeat a few times to handle nesting
+        for (let i = 0; i < 5; i++) {
+            container.find('div, span, section, article, a').each((_, el) => {
+                // Keep href for A links? Let's unwrap A too if it doesn't look like a real link in text.
+                // For now, let's keep A tags as they might be important.
+                if (el.tagName === 'a') return; 
+                $(el).replaceWith($(el).contents());
+            });
         }
+        
+        // 4. Final Cleanup of empty tags
+        // After unwrapping, we might have empty p tags or h tags
+        container.find('p, h2, h3, h4, h5, h6, ul, ol, li').each((_, el) => {
+            if ($(el).text().trim().length === 0 && $(el).find('img').length === 0) {
+                $(el).remove();
+            }
+        });
 
-        // Fallback to body if nothing specific found (dangerous but better than nothing?)
-        if (!content) {
-            // content = $('body').html() || ''; 
-            // Better to return null than garbage body
-            return null;
-        }
+        let cleanerContent = container.html() || "";
 
-        // Create excerpt from content
-        const cleanText = $.root().find(selectors.join(', ')).first().text().substring(0, 160).trim() + '...';
+        if (!cleanerContent) return null;
 
-        return { content: content, excerpt: cleanText };
+        // Create excerpt from the clean content
+        const cleanText = cheerio.load(cleanerContent).text().substring(0, 160).trim() + '...';
+
+        return { content: cleanerContent, excerpt: cleanText };
       }
     } catch (error) {
        // console.warn(`Scraping failed for ${url}:`, error);
