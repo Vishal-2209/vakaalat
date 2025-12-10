@@ -96,6 +96,42 @@ export const getNews = unstable_cache(
   { revalidate: 3600, tags: ['news'] }
 );
 
+// Cached scraping function
+const getScrapedContent = unstable_cache(
+  async (url: string) => {
+    try {
+      // console.log(`Scraping content for: ${url}`);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+
+      const response = await fetch(url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        },
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+
+      if (response.ok) {
+        const html = await response.text();
+        const dom = new JSDOM(html, { url });
+        const reader = new Readability(dom.window.document);
+        const article = reader.parse();
+        
+        if (article && article.content) {
+          return { content: article.content, excerpt: article.excerpt };
+        }
+      }
+    } catch (error) {
+      console.warn(`Scraping failed for ${url}:`, error);
+    }
+    return null;
+  },
+  ['scraped-news-content'],
+  { revalidate: 86400, tags: ['news-content'] } // Cache for 24 hours
+);
+
 export async function getNewsBySlug(slug: string): Promise<NewsPost | undefined> {
   const newsList = await getNews();
   const newsItem = newsList.find((item) => item.slug === slug);
@@ -104,32 +140,13 @@ export async function getNewsBySlug(slug: string): Promise<NewsPost | undefined>
 
   // Enhance with full content if it's an external link
   if (newsItem.isExternal && newsItem.link) {
-      try {
-          console.log(`Fetching full content for: ${newsItem.link}`);
-          const response = await fetch(newsItem.link, {
-             headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-            },
-            next: { revalidate: 3600 } // Cache scraped content for 1 hour
-          });
-          
-          if (response.ok) {
-              const html = await response.text();
-              const dom = new JSDOM(html, { url: newsItem.link });
-              const reader = new Readability(dom.window.document);
-              const article = reader.parse();
-
-              if (article && article.content) {
-                  // console.log(`Successfully extracted content for ${slug}`);
-                  return {
-                      ...newsItem,
-                      content: article.content, // Replace content with full article HTML
-                      excerpt: article.excerpt || newsItem.excerpt // Update excerpt if better one found
-                  };
-              }
-          }
-      } catch (error) {
-          console.warn(`Failed to fetch full content for ${slug}, falling back to snippet.`, error);
+      const scrapedData = await getScrapedContent(newsItem.link);
+      if (scrapedData) {
+          return {
+              ...newsItem,
+              content: scrapedData.content,
+              excerpt: scrapedData.excerpt || newsItem.excerpt
+          };
       }
   }
 
