@@ -116,7 +116,7 @@ const getScrapedContent = unstable_cache(
         const $ = cheerio.load(html);
 
         // Remove unwanted elements
-        $('script, style, nav, header, footer, iframe, form, .ad, .advertisement, .social-share, .related-articles').remove();
+        $('script, style, nav, header, footer, iframe, form, .ad, .advertisement, .social-share, .related-articles, #comments, .comments, .comment-section, .report-error, .correction, .author-bio').remove();
 
         // Fix relative image paths
         $('img').each((_, el) => {
