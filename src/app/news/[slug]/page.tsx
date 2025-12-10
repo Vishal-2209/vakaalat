@@ -4,8 +4,33 @@ import { Calendar, User, ArrowLeft, ArrowRight } from 'lucide-react';
 import { ShareButtons } from '@/components/ShareButtons';
 import { getNewsBySlug } from '@/lib/news-data';
 
+import { Metadata } from 'next';
+
 interface PageProps {
     params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const news = await getNewsBySlug(slug);
+
+  if (!news) {
+    return {
+      title: 'Validating Article | Vakaalat',
+    };
+  }
+
+  return {
+    title: `${news.title} | Vakaalat News`,
+    description: news.excerpt.slice(0, 160),
+    openGraph: {
+      title: news.title,
+      description: news.excerpt.slice(0, 160),
+      type: 'article',
+      publishedTime: news.date,
+      authors: [news.author],
+    },
+  };
 }
 
 export default async function NewsPost({ params }: PageProps) {

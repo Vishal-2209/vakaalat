@@ -3,6 +3,13 @@ import { Calendar, User, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/Button';
 import { getNews } from '@/lib/news-data';
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Legal News & Updates | Vakaalat',
+  description: 'Stay informed with the latest legal news, judiciary announcements, and regulatory updates from India and around the world.',
+};
+
 export default async function NewsPage() {
   const news = await getNews();
 
