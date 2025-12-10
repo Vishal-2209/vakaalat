@@ -98,7 +98,7 @@ export const getNews = unstable_cache(
 
 // Cached scraping function
 const getScrapedContent = unstable_cache(
-  async (url: string) => {
+  async (url: string): Promise<{ content: string; excerpt: string } | null> => {
     return null; // TEMPORARILY DISABLED TO DEBUG 500 ERROR on Vercel
     /*
     try {
