@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { Calendar, User, ArrowLeft, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
-import { Button } from '@/components/Button';
+import { Calendar, User, ArrowLeft } from 'lucide-react';
+import { ShareButtons } from '@/components/ShareButtons';
 import { getBlogBySlug } from '@/lib/blog-data';
 
 interface PageProps {
@@ -54,20 +54,7 @@ export default async function BlogPost({ params }: PageProps) {
                 <div className="text-white/60 text-sm">
                     Share this article:
                 </div>
-                <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="sm" className="w-10 h-10 p-0 rounded-full bg-white/5 hover:bg-accent hover:text-black">
-                        <Twitter className="w-5 h-5" />
-                    </Button>
-                    <Button variant="ghost" size="sm" className="w-10 h-10 p-0 rounded-full bg-white/5 hover:bg-accent hover:text-black">
-                        <Linkedin className="w-5 h-5" />
-                    </Button>
-                    <Button variant="ghost" size="sm" className="w-10 h-10 p-0 rounded-full bg-white/5 hover:bg-accent hover:text-black">
-                        <Facebook className="w-5 h-5" />
-                    </Button>
-                    <Button variant="ghost" size="sm" className="w-10 h-10 p-0 rounded-full bg-white/5 hover:bg-accent hover:text-black">
-                        <Share2 className="w-5 h-5" />
-                    </Button>
-                </div>
+                <ShareButtons title={blog.title} />
             </div>
         </div>
       </div>

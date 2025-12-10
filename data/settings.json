@@ -1,6 +1,6 @@
 {
   "clientWebAppUrl": "https://app.vakaalat.in",
   "clientAppDownloadUrl": "https://play.google.com/store/apps/details?id=com.vakaalat.client",
-  "lawyerWebAppUrl": "law-connect-for-lawyers.vakaalat.in",
+  "lawyerWebAppUrl": "https://law-connect-for-lawyers.vakaalat.in",
   "lawyerAppDownloadUrl": "https://play.google.com/store/apps/details?id=com.vakaalat.lawyer"
 }
