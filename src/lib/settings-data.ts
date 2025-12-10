@@ -20,8 +20,10 @@ const DEFAULT_SETTINGS: Settings = {
 export async function getSettings(): Promise<Settings> {
   try {
     const data = await fs.readFile(DATA_FILE, 'utf-8');
+    console.log("Settings loaded from file:", data);
     return { ...DEFAULT_SETTINGS, ...JSON.parse(data) };
   } catch (error) {
+    console.error("Failed to load settings from file:", error);
     return DEFAULT_SETTINGS;
   }
 }
