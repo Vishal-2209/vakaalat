@@ -99,12 +99,10 @@ export const getNews = unstable_cache(
 // Cached scraping function
 const getScrapedContent = unstable_cache(
   async (url: string): Promise<{ content: string; excerpt: string } | null> => {
-    return null; // TEMPORARILY DISABLED TO DEBUG 500 ERROR on Vercel
-    /*
     try {
       // console.log(`Scraping content for: ${url}`);
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+      const timeoutId = setTimeout(() => controller.abort(), 4000); // 4s timeout for Vercel
 
       const response = await fetch(url, {
         headers: {
@@ -122,14 +120,14 @@ const getScrapedContent = unstable_cache(
         const article = reader.parse();
         
         if (article && article.content) {
-          return { content: article.content, excerpt: article.excerpt };
+          return { content: article.content, excerpt: article.excerpt || '' };
         }
       }
     } catch (error) {
-      console.warn(`Scraping failed for ${url}:`, error);
+       // console.warn(`Scraping failed for ${url}:`, error);
+       // Fail silently to avoid crashing the page
     }
     return null;
-    */
   },
   ['scraped-news-content'],
   { revalidate: 86400, tags: ['news-content'] } // Cache for 24 hours
