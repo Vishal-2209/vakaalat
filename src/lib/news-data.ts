@@ -99,6 +99,8 @@ export const getNews = unstable_cache(
 // Cached scraping function
 const getScrapedContent = unstable_cache(
   async (url: string) => {
+    return null; // TEMPORARILY DISABLED TO DEBUG 500 ERROR on Vercel
+    /*
     try {
       // console.log(`Scraping content for: ${url}`);
       const controller = new AbortController();
@@ -127,6 +129,7 @@ const getScrapedContent = unstable_cache(
       console.warn(`Scraping failed for ${url}:`, error);
     }
     return null;
+    */
   },
   ['scraped-news-content'],
   { revalidate: 86400, tags: ['news-content'] } // Cache for 24 hours
