@@ -25,8 +25,10 @@ const RSS_FEEDS = [
 // Import libraries for content extraction
 import { JSDOM } from 'jsdom';
 import { Readability } from '@mozilla/readability';
+import { unstable_cache } from 'next/cache';
 
-export async function getNews(): Promise<NewsPost[]> {
+// Internal fetching function
+async function fetchNewsData(): Promise<NewsPost[]> {
   // ... (existing implementation)
     // 1. Fetch Local News
   let localNews: NewsPost[] = [];
@@ -86,6 +88,13 @@ export async function getNews(): Promise<NewsPost[]> {
   // Sort by date descending
   return allNews.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
+
+// Exported cached version
+export const getNews = unstable_cache(
+  async () => await fetchNewsData(),
+  ['news-feed-data'],
+  { revalidate: 3600, tags: ['news'] }
+);
 
 export async function getNewsBySlug(slug: string): Promise<NewsPost | undefined> {
   const newsList = await getNews();
