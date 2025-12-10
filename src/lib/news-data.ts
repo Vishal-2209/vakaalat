@@ -23,8 +23,7 @@ const RSS_FEEDS = [
 ];
 
 // Import libraries for content extraction
-import { JSDOM } from 'jsdom';
-import { Readability } from '@mozilla/readability';
+import * as cheerio from 'cheerio';
 import { unstable_cache } from 'next/cache';
 
 // Internal fetching function
@@ -100,9 +99,8 @@ export const getNews = unstable_cache(
 const getScrapedContent = unstable_cache(
   async (url: string): Promise<{ content: string; excerpt: string } | null> => {
     try {
-      // console.log(`Scraping content for: ${url}`);
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 4000); // 4s timeout for Vercel
+      const timeoutId = setTimeout(() => controller.abort(), 4000); // 4s timeout
 
       const response = await fetch(url, {
         headers: {
@@ -115,17 +113,44 @@ const getScrapedContent = unstable_cache(
 
       if (response.ok) {
         const html = await response.text();
-        const dom = new JSDOM(html, { url });
-        const reader = new Readability(dom.window.document);
-        const article = reader.parse();
+        const $ = cheerio.load(html);
+
+        // Remove unwanted elements
+        $('script, style, nav, header, footer, iframe, form, .ad, .advertisement, .social-share, .related-articles').remove();
+
+        // Try to find the main content
+        let content = '';
+        const selectors = ['article', 'main', '.article-body', '.story-content', '.content', '#content'];
         
-        if (article && article.content) {
-          return { content: article.content, excerpt: article.excerpt || '' };
+        for (const selector of selectors) {
+            const element = $(selector);
+            if (element.length > 0) {
+                // Get the longest element if multiple match (heuristic)
+                let bestMatch = element.first();
+                element.each((_, el) => {
+                    if ($(el).text().length > bestMatch.text().length) {
+                        bestMatch = $(el);
+                    }
+                });
+                content = bestMatch.html() || '';
+                if (content.length > 500) break; // Good enough match
+            }
         }
+
+        // Fallback to body if nothing specific found (dangerous but better than nothing?)
+        if (!content) {
+            // content = $('body').html() || ''; 
+            // Better to return null than garbage body
+            return null;
+        }
+
+        // Create excerpt from content
+        const cleanText = $.root().find(selectors.join(', ')).first().text().substring(0, 160).trim() + '...';
+
+        return { content: content, excerpt: cleanText };
       }
     } catch (error) {
        // console.warn(`Scraping failed for ${url}:`, error);
-       // Fail silently to avoid crashing the page
     }
     return null;
   },
