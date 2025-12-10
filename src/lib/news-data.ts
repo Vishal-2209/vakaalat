@@ -118,6 +118,24 @@ const getScrapedContent = unstable_cache(
         // Remove unwanted elements
         $('script, style, nav, header, footer, iframe, form, .ad, .advertisement, .social-share, .related-articles').remove();
 
+        // Fix relative image paths
+        $('img').each((_, el) => {
+            const src = $(el).attr('src');
+            if (src) {
+                try {
+                    // Resolve relative URLs to absolute
+                    const absoluteUrl = new URL(src, url).toString();
+                    $(el).attr('src', absoluteUrl);
+                    
+                    // Remove lazy loading attributes that might block loading
+                    $(el).removeAttr('loading');
+                    $(el).removeAttr('srcset'); 
+                } catch (e) {
+                    // Ignore invalid URLs
+                }
+            }
+        });
+
         // Try to find the main content
         let content = '';
         const selectors = ['article', 'main', '.article-body', '.story-content', '.content', '#content'];

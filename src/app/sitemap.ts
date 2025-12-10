@@ -1,7 +1,16 @@
 import { MetadataRoute } from 'next';
+import { getNews } from '@/lib/news-data';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.vakaalat.in';
+  const news = await getNews();
+
+  const newsUrls = news.map((article) => ({
+    url: `${baseUrl}/news/${article.slug}`,
+    lastModified: new Date(article.date),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
 
   return [
     {
@@ -35,6 +44,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     {
+      url: `${baseUrl}/news`,
+      lastModified: new Date(),
+      changeFrequency: 'hourly',
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: 'yearly',
@@ -52,5 +67,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.3,
     },
+    ...newsUrls,
   ];
 }
