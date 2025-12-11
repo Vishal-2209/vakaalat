@@ -33,26 +33,25 @@ export function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 transition-all duration-300",
-          scrolled ? "bg-background/80 backdrop-blur-md border-b border-white/5 py-4" : "bg-transparent py-4 md:py-6"
+          "fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 transition-all duration-300",
+          scrolled ? "bg-white/90 backdrop-blur-md border-b border-black/5" : "bg-transparent"
         )}
       >
-        <Link href="/" className="text-2xl font-bold tracking-tighter text-white z-50 relative">
-          Vakaalat<span className="text-accent">.</span>
+        <Link href="/" className="text-2xl font-extrabold tracking-tighter text-foreground z-50 flex items-center gap-1">
+          Vakaalat
         </Link>
         
         {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-white/70">
-          <Link href="/services" className="hover:text-white transition-colors">Services</Link>
-          <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>
-          <Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link>
-          <Link href="/about" className="hover:text-white transition-colors">About</Link>
-          <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
-        </div>
+          <div className="hidden md:flex items-center gap-10">
+            <Link href="/services" className="text-sm font-medium text-foreground hover:text-accent transition-colors">Services</Link>
+            <Link href="/methodology" className="text-sm font-medium text-foreground hover:text-accent transition-colors">Methodology</Link>
+            <Link href="/about" className="text-sm font-medium text-foreground hover:text-accent transition-colors">About</Link>
+            <Link href="/contact" className="text-sm font-medium text-foreground hover:text-accent transition-colors">Contact</Link>
+          </div>
 
         <div className="flex items-center gap-4">
-          <Link href="/services">
-              <Button variant="accent" className="hidden lg:inline-flex">Get Started</Button>
+          <Link href="/contact" className="hidden lg:inline-flex">
+              <Button variant="default" className="rounded-full bg-black text-white hover:bg-black/80 px-6 h-10 text-sm font-medium">Get Started</Button>
           </Link>
           
           {/* Mobile Menu Toggle */}

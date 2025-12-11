@@ -28,29 +28,29 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-background border-t border-white/5 pt-24 pb-12 px-6">
+    <footer className="bg-background border-t border-foreground/5 pt-24 pb-12 px-6">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           
           {/* Brand Column */}
           <div className="space-y-6">
-            <Link href="/" className="text-2xl font-bold tracking-tighter text-white block">
+            <Link href="/" className="text-2xl font-bold tracking-tighter text-foreground block">
               Vakaalat<span className="text-accent">.</span>
             </Link>
-            <p className="text-white/60 leading-relaxed">
+            <p className="text-foreground/60 leading-relaxed">
               Simplifying legal services with intelligent technology and expert verification.
             </p>
             <div className="flex items-center gap-4">
-              <a href="https://www.vakaalat.in" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:bg-accent hover:text-black transition-all">
+              <a href="https://www.vakaalat.in" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-foreground/5 flex items-center justify-center text-foreground/60 hover:bg-accent hover:text-white transition-all">
                 <Globe className="w-5 h-5" />
               </a>
-              <a href="https://www.linkedin.com/company/vakaalat-one/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:bg-accent hover:text-black transition-all">
+              <a href="https://www.linkedin.com/company/vakaalat-one/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-foreground/5 flex items-center justify-center text-foreground/60 hover:bg-accent hover:text-white transition-all">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="https://www.instagram.com/vakaalatofficial" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:bg-accent hover:text-black transition-all">
+              <a href="https://www.instagram.com/vakaalatofficial" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-foreground/5 flex items-center justify-center text-foreground/60 hover:bg-accent hover:text-white transition-all">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="mailto:support@vakaalat.in" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:bg-accent hover:text-black transition-all">
+              <a href="mailto:support@vakaalat.in" className="w-10 h-10 rounded-full bg-foreground/5 flex items-center justify-center text-foreground/60 hover:bg-accent hover:text-white transition-all">
                 <Mail className="w-5 h-5" />
               </a>
             </div>
@@ -58,8 +58,8 @@ export function Footer() {
 
           {/* Company Links */}
           <div>
-            <h3 className="font-bold text-white mb-6">Company</h3>
-            <ul className="space-y-4 text-white/60">
+            <h3 className="font-bold text-foreground mb-6">Company</h3>
+            <ul className="space-y-4 text-foreground/60">
               <li><Link href="/about" className="hover:text-accent transition-colors">About Us</Link></li>
               <li><Link href="/careers" className="hover:text-accent transition-colors">Careers</Link></li>
               <li><Link href="/services" className="hover:text-accent transition-colors">Services</Link></li>
@@ -69,8 +69,8 @@ export function Footer() {
 
           {/* Resources Links */}
           <div>
-            <h3 className="font-bold text-white mb-6">Resources</h3>
-            <ul className="space-y-4 text-white/60">
+            <h3 className="font-bold text-foreground mb-6">Resources</h3>
+            <ul className="space-y-4 text-foreground/60">
               <li><Link href="/methodology" className="hover:text-accent transition-colors">Methodology</Link></li>
               <li><Link href="/blogs" className="hover:text-accent transition-colors">Blogs</Link></li>
               <li><Link href="/news" className="hover:text-accent transition-colors">News</Link></li>
@@ -81,18 +81,18 @@ export function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h3 className="font-bold text-white mb-6">Stay Updated</h3>
-            <p className="text-white/60 mb-6">Subscribe to our newsletter for the latest legal tech updates.</p>
+            <h3 className="font-bold text-foreground mb-6">Stay Updated</h3>
+            <p className="text-foreground/60 mb-6">Subscribe to our newsletter for the latest legal tech updates.</p>
             <form onSubmit={handleNewsletterSubmit} className="space-y-4">
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
                 <input 
                   name="email"
                   type="email" 
                   placeholder="Enter your email" 
                   required
                   suppressHydrationWarning
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-white focus:outline-none focus:border-accent/50 transition-colors"
+                  className="w-full bg-card border border-black/5 rounded-xl pl-12 pr-4 py-3 text-foreground focus:outline-none focus:border-accent/50 focus:bg-white transition-all shadow-sm"
                 />
               </div>
               <Button variant="accent" className="w-full" disabled={isSubmitting}>
@@ -102,7 +102,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/5 pt-8 text-center text-white/40 text-sm">
+        <div className="border-t border-foreground/5 pt-8 text-center text-foreground/40 text-sm">
           <p>&copy; {new Date().getFullYear()} Vakaalat. All rights reserved.</p>
         </div>
       </div>
