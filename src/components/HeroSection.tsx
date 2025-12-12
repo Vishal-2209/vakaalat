@@ -32,7 +32,7 @@ export function HeroSection() {
             className="text-6xl md:text-[5.5rem] lg:text-[7.5rem] font-extrabold tracking-tighter leading-[0.95] text-foreground mb-8 text-center mx-auto max-w-6xl relative"
           >
             Powering the <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-violet-600 pb-2">Modern Lawyer.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-violet-600 pb-2">Modern Lawyers</span>
           </motion.h1>
 
           {/* Subtext */}

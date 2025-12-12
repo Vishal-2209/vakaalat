@@ -99,7 +99,18 @@ export default function BrandGuidelinesPage() {
                         </div>
                     </div>
                     <p className="text-sm text-foreground/60">
-                         For dark backgrounds. The text becomes white, but the period remains <strong>Accent Purple</strong> (simulated here).
+                        For dark backgrounds. The text becomes white, but the period remains <strong>Accent Purple</strong> (simulated here).
+                    </p>
+                </div>
+
+                {/* Favicon / Icon */}
+                <div className="space-y-6">
+                    <h3 className="text-lg font-bold text-foreground/80">Logomark (Icon)</h3>
+                     <div className="bg-card p-16 rounded-[2.5rem] flex items-center justify-center border border-black/5 min-h-[300px]">
+                        <img src="/icon.png" alt="Vakaalat Icon" className="h-32 w-32 object-contain" />
+                    </div>
+                    <p className="text-sm text-foreground/60">
+                        The standalone logomark. Used for favicons, app icons, and social media avatars.
                     </p>
                 </div>
 

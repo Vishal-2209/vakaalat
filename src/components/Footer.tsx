@@ -41,7 +41,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-foreground/60 leading-relaxed text-base">
-              Simplifying legal services with intelligent technology and expert verification. A unified ecosystem for the modern advocate.
+              Powering the Modern Lawyers. A unified ecosystem for the modern advocate.
             </p>
             <div className="flex items-center gap-3">
               <a href="https://www.vakaalat.in" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white border border-black/5 flex items-center justify-center text-foreground/60 hover:bg-accent hover:text-white hover:border-accent transition-all duration-300">
