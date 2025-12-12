@@ -44,10 +44,10 @@ export function Footer() {
               <a href="https://www.vakaalat.in" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white border border-black/5 flex items-center justify-center text-foreground/60 hover:bg-accent hover:text-white hover:border-accent transition-all duration-300">
                 <Globe className="w-4 h-4" />
               </a>
-              <a href="https://www.linkedin.com/company/vakaalat-one/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white border border-black/5 flex items-center justify-center text-foreground/60 hover:bg-accent hover:text-white hover:border-accent transition-all duration-300">
+              <a href="https://www.linkedin.com/company/vakaalat.in" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white border border-black/5 flex items-center justify-center text-foreground/60 hover:bg-accent hover:text-white hover:border-accent transition-all duration-300">
                 <Linkedin className="w-4 h-4" />
               </a>
-              <a href="https://www.instagram.com/vakaalatofficial" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white border border-black/5 flex items-center justify-center text-foreground/60 hover:bg-accent hover:text-white hover:border-accent transition-all duration-300">
+              <a href="https://www.instagram.com/vakaalat.in" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white border border-black/5 flex items-center justify-center text-foreground/60 hover:bg-accent hover:text-white hover:border-accent transition-all duration-300">
                 <Instagram className="w-4 h-4" />
               </a>
               <a href="mailto:support@vakaalat.in" className="w-10 h-10 rounded-full bg-white border border-black/5 flex items-center justify-center text-foreground/60 hover:bg-accent hover:text-white hover:border-accent transition-all duration-300">
