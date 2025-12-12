@@ -1,55 +1,66 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Star } from 'lucide-react';
+import { User, Users, Building2, ArrowRight, Briefcase } from 'lucide-react';
+import Link from 'next/link';
 
-const testimonials = [
+const segments = [
   {
-    name: "Adv. Rajesh Sharma",
-    role: "High Court, Delhi",
-    content: "Vakaalat has completely streamlined how I manage my client communications. No more scattered WhatsApp messages. It's professional and secure.",
-    rating: 5
+    icon: <User className="w-8 h-8" />,
+    title: "Independent Advocates",
+    description: "For the solo practitioner managing multiple courts. Organize your dates, clients, and chaos in one app.",
+    link: "/services"
   },
   {
-    name: "Sneha Patel",
-    role: "Legal Associate",
-    content: "The Law Connect features are a lifesaver. Scheduling appointments and sending automated updates to clients saves me hours every week.",
-    rating: 5
+    icon: <Users className="w-8 h-8" />,
+    title: "Law Firms & Chambers",
+    description: "Collaborate with your juniors and partners. Assign cases, track tasks, and manage billing centrally.",
+    link: "/services"
   },
   {
-    name: "Amitabh Verma",
-    role: "Senior Counsel",
-    content: "Finally, a platform that understands the Indian legal ecosystem. Data sovereignty and localized features make it the only choice for my firm.",
-    rating: 5
+    icon: <Briefcase className="w-8 h-8" />,
+    title: "Legal Consultants",
+    description: "Manage advisory retainers and one-off consultations with ease. Streamline your practice.",
+    link: "/services"
   }
 ];
 
 export function TestimonialsSection() {
   return (
     <section className="py-24 bg-background px-6 border-t border-foreground/5">
-      <div className="container mx-auto">
-        <h2 className="text-3xl md:text-5xl font-bold text-center mb-16">Trusted by <span className="text-accent">Advocates</span></h2>
+      <div className="container mx-auto max-w-7xl">
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+        >
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">Built for <span className="text-accent">Every Scale.</span></h2>
+            <p className="max-w-2xl mx-auto text-foreground/60 text-lg">
+                Whether you are arguing your first case or managing a Tier-1 firm, Vakaalat adapts to your workflow.
+            </p>
+        </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((t, i) => (
+          {segments.map((s, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="bg-foreground/5 p-8 rounded-3xl border border-foreground/10"
+              className="glass-card p-10 rounded-[2.5rem] hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 flex flex-col h-full"
             >
-              <div className="flex gap-1 mb-4">
-                {[...Array(t.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-accent text-accent" />
-                ))}
+              <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center text-accent mb-8 group-hover:bg-accent group-hover:text-white transition-colors duration-300">
+                  {s.icon}
               </div>
-              <p className="text-lg text-foreground/80 mb-6 leading-relaxed">"{t.content}"</p>
-              <div>
-                <div className="font-bold">{t.name}</div>
-                <div className="text-sm text-foreground/40">{t.role}</div>
-              </div>
+              <h3 className="text-2xl font-bold text-foreground mb-4">{s.title}</h3>
+              <p className="text-foreground/60 mb-8 leading-relaxed font-medium flex-grow">{s.description}</p>
+              
+              <Link href={s.link} className="flex items-center gap-2 text-foreground font-bold group-hover:gap-4 transition-all">
+                  <span>Learn More</span>
+                  <ArrowRight className="w-4 h-4" />
+              </Link>
             </motion.div>
           ))}
         </div>

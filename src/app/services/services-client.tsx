@@ -15,8 +15,8 @@ const products = [
     status: "Web & Mobile App",
     statusColor: "text-accent",
     icon: <MessageSquare className="w-8 h-8 text-white" />,
-    description: "The client relationship hub. Replace WhatsApp chaos with secure, centralized communication and auto-updates.",
-    features: ["Secure Messaging", "Client Directory", "Auto-Updates"],
+    description: "The client relationship hub. Get matched with relevant clients and manage consultation bookings seamlessly.",
+    features: ["Verified Leads", "Consultation Requests", "Video Consultations"],
     cta: "Launch Platform",
     gradient: "from-violet-600 to-indigo-600"
   },
@@ -225,43 +225,29 @@ export function ServicesClient({ settings }: { settings: Settings }) {
                              </div>
 
                              <div className="flex-1 relative bg-white overflow-hidden">
-                                 {/* LAW CONNECT: Chat Interface */}
+                                 {/* LAW CONNECT: Consultation Request Interface */}
                                  {product.id === 'law-connect' && (
-                                     <div className="flex h-full">
-                                         {/* Sidebar */}
-                                         <div className="w-1/3 border-r border-gray-100 bg-gray-50/50 p-3 hidden sm:flex flex-col gap-3">
-                                             <div className="h-8 bg-gray-200/50 rounded-lg w-full mb-2" />
-                                             {[1, 2, 3].map((_, i) => (
-                                                 <div key={i} className={`flex items-center gap-2 p-2 rounded-xl ${i === 0 ? 'bg-white shadow-sm border border-black/5' : 'opacity-50'}`}>
-                                                     <div className="w-8 h-8 rounded-full bg-gray-200" />
-                                                     <div className="flex-1 min-w-0">
-                                                         <div className="h-2 w-16 bg-gray-900/20 rounded mb-1" />
-                                                         <div className="h-1.5 w-10 bg-gray-900/10 rounded" />
-                                                     </div>
-                                                 </div>
-                                             ))}
-                                         </div>
-                                         {/* Chat Area */}
-                                         <div className="flex-1 p-4 flex flex-col gap-4">
-                                            <div className="flex items-start gap-3">
-                                                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-600">RK</div>
-                                                <div className="bg-gray-100 p-3 rounded-2xl rounded-tl-none text-[10px] sm:text-xs text-gray-600 max-w-[80%] leading-relaxed">
-                                                    Sir, I have received the court notice. When can we meet to discuss the reply?
-                                                </div>
-                                            </div>
-                                            <div className="flex items-start gap-3 flex-row-reverse">
-                                                <div className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center">
-                                                    <MessageSquare className="w-4 h-4" />
-                                                </div>
-                                                <div className="bg-accent/10 border border-accent/20 p-3 rounded-2xl rounded-tr-none text-[10px] sm:text-xs text-gray-800 max-w-[80%] leading-relaxed shadow-sm">
-                                                    <p className="font-semibold text-accent mb-1 text-[9px] uppercase tracking-wider">Auto-Reply</p>
-                                                    Noted. Please upload a photo of the notice here. Appointment scheduled for tomorrow at 4 PM.
-                                                </div>
-                                            </div>
-                                            <div className="mt-auto border-t border-gray-100 pt-3">
-                                                <div className="h-8 bg-gray-50 rounded-full border border-gray-200 w-full" />
-                                            </div>
-                                         </div>
+                                     <div className="flex h-full bg-gray-50/50 p-6 items-center justify-center">
+                                          <div className="w-full max-w-[280px] bg-white rounded-3xl shadow-xl border border-black/5 p-5 relative">
+                                              <div className="absolute top-4 right-4 text-[9px] font-bold text-white bg-accent px-2 py-0.5 rounded-full shadow-md shadow-accent/20">NEW REQUEST</div>
+                                              <div className="text-[10px] text-gray-400 font-bold uppercase mb-1">Consultation</div>
+                                              <div className="text-base font-bold text-gray-900 mb-3">Property Dispute</div>
+                                              
+                                              <div className="flex items-center gap-3 bg-gray-50 p-2.5 rounded-2xl border border-gray-100 mb-4">
+                                                  <div className="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex flex-col items-center justify-center border border-orange-200">
+                                                      <span className="text-[9px] font-bold leading-none">NOV</span>
+                                                      <span className="text-sm font-bold leading-none">14</span>
+                                                  </div>
+                                                  <div>
+                                                      <div className="text-[11px] font-bold text-gray-900">10:00 AM</div>
+                                                      <div className="text-[9px] text-gray-500">Video Call</div>
+                                                  </div>
+                                              </div>
+                                              <div className="grid grid-cols-2 gap-2">
+                                                   <button className="py-2.5 bg-foreground text-white rounded-xl text-[10px] font-bold hover:bg-black/80 transition-colors">Accept</button>
+                                                   <button className="py-2.5 bg-white border border-gray-200 text-foreground rounded-xl text-[10px] font-bold hover:bg-gray-50 transition-colors">Reschedule</button>
+                                              </div>
+                                          </div>
                                      </div>
                                  )}
 
@@ -390,6 +376,7 @@ export function ServicesClient({ settings }: { settings: Settings }) {
         </div>
 
       </div>
+      <Footer />
     </main>
   );
 }

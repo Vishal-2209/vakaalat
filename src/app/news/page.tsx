@@ -44,10 +44,24 @@ export default async function NewsPage() {
                 <Link href={`/news/${featuredNews.slug}`} className="group block">
                     <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center bg-card rounded-[2.5rem] p-8 md:p-12 border border-black/5 hover:border-accent/30 transition-all hover:shadow-2xl hover:shadow-accent/5">
                         <div className="aspect-video md:aspect-[4/3] bg-subtle rounded-3xl overflow-hidden relative">
-                             {/* Placeholder pattern for image */}
-                             <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-accent/5" />
-                             <div className="absolute inset-0 flex items-center justify-center text-foreground/10 font-bold text-9xl select-none">N</div>
-                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
+                             {featuredNews.image ? (
+                                 <img 
+                                     src={featuredNews.image} 
+                                     alt={featuredNews.title} 
+                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                     onError={(e) => {
+                                         // Fallback to placeholder on error
+                                         e.currentTarget.style.display = 'none';
+                                         e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                                     }}
+                                 />
+                             ) : null}
+                             
+                             {/* Placeholder pattern for image (Visible if no image or error) */}
+                             <div className={`absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-accent/5 ${featuredNews.image ? 'hidden' : ''}`}>
+                                 <div className="absolute inset-0 flex items-center justify-center text-foreground/10 font-bold text-9xl select-none">N</div>
+                             </div>
+                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors pointer-events-none" />
                         </div>
                         <div className="space-y-6">
                             <div className="flex items-center gap-4 text-sm font-medium text-foreground/60">
@@ -82,8 +96,21 @@ export default async function NewsPage() {
             <Link key={item.id} href={`/news/${item.slug}`} className="group h-full">
                 <article className="flex flex-col h-full bg-card border border-black/5 rounded-[2rem] p-8 hover:border-accent/30 transition-all hover:shadow-xl hover:shadow-accent/5 hover:-translate-y-1">
                      <div className="mb-6 aspect-video bg-subtle rounded-2xl overflow-hidden relative">
-                         <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-foreground/10" />
-                         <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-foreground border border-black/5">
+                         {item.image ? (
+                             <img 
+                                 src={item.image} 
+                                 alt={item.title} 
+                                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                 onError={(e) => {
+                                     e.currentTarget.style.display = 'none';
+                                     e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                                 }}
+                             />
+                         ) : null}
+                         
+                         <div className={`absolute inset-0 bg-gradient-to-br from-foreground/5 to-foreground/10 ${item.image ? 'hidden' : ''}`} />
+                         
+                         <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-foreground border border-black/5 z-10 transition-opacity">
                             {item.category}
                          </div>
                     </div>

@@ -213,19 +213,76 @@ export default function MethodologyPage() {
                             <motion.div 
                                 whileHover={{ scale: 1.05, rotate: 2 }}
                                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                                className="w-full max-w-md aspect-square rounded-[3rem] bg-gradient-to-br from-white to-subtle border border-black/5 shadow-2xl flex items-center justify-center relative z-10 p-12"
+                                className="w-full max-w-md aspect-square rounded-[3rem] bg-gradient-to-br from-white to-subtle border border-black/5 shadow-2xl flex flex-col items-center justify-center relative z-10 p-8 overflow-hidden"
                             >
                                 <div className={`absolute inset-0 bg-gradient-to-br ${step.gradient} opacity-5 rounded-[3rem]`} />
-                                <motion.div 
-                                    whileHover={{ scale: 1.2, rotate: -5 }}
-                                    className={`w-28 h-28 rounded-[2rem] bg-gradient-to-br ${step.gradient} flex items-center justify-center shadow-xl shadow-accent/20 transition-transform duration-500`}
-                                >
-                                    {step.icon}
-                                </motion.div>
+                                
+                                {/* Dynamic Mockup Content Based on Step */}
+                                {i === 0 && ( // Intake - Search UI
+                                    <div className="w-full space-y-4 relative z-10">
+                                        <div className="bg-white p-4 rounded-2xl shadow-sm border border-black/5 flex items-center gap-3">
+                                             <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
+                                                 <Users className="w-4 h-4" />
+                                             </div>
+                                             <div className="h-2 w-24 bg-gray-100 rounded-full" />
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <div className="px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-bold">New Lead</div>
+                                            <div className="px-3 py-1 rounded-full bg-gray-100 text-gray-400 text-xs font-bold">Archive</div>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-2xl shadow-md border border-accent/20 flex gap-4 items-center">
+                                            <div className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                                                <CheckCircle className="w-5 h-5" />
+                                            </div>
+                                            <div>
+                                                <div className="text-xs font-bold text-gray-900">Consultation Booked</div>
+                                                <div className="text-[10px] text-gray-400">Tomorrow, 10:00 AM</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {i === 1 && ( // Management - Stats
+                                    <div className="w-full relative z-10 flex flex-col items-center gap-6">
+                                         <div className="relative w-32 h-32 flex items-center justify-center">
+                                             <svg className="w-full h-full transform -rotate-90">
+                                                 <circle cx="64" cy="64" r="60" stroke="#f1f5f9" strokeWidth="8" fill="transparent" />
+                                                 <circle cx="64" cy="64" r="60" stroke="currentColor" strokeWidth="8" fill="transparent" strokeDasharray="377" strokeDashoffset="94" className="text-accent" />
+                                             </svg>
+                                             <div className="absolute text-3xl font-bold">75%</div>
+                                         </div>
+                                         <div className="w-full bg-white p-4 rounded-2xl shadow-sm border border-black/5">
+                                             <div className="flex justify-between items-center mb-2">
+                                                 <div className="text-xs font-bold text-gray-500">NEXT HEARING</div>
+                                                 <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                                             </div>
+                                             <div className="text-sm font-bold">High Court, Hall 4</div>
+                                         </div>
+                                    </div>
+                                )}
+
+                                {i === 2 && ( // Execution - List
+                                    <div className="w-full space-y-3 relative z-10">
+                                        {[1, 2, 3].map((_, idx) => (
+                                            <div key={idx} className="bg-white p-3 rounded-xl shadow-sm border border-black/5 flex items-center gap-3">
+                                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center ${idx === 0 ? 'bg-accent border-accent text-white' : 'border-gray-200'}`}>
+                                                    {idx === 0 && <CheckCircle className="w-3 h-3" />}
+                                                </div>
+                                                <div className="flex-1 space-y-1">
+                                                    <div className="h-2 w-3/4 bg-gray-100 rounded-full" />
+                                                    <div className="h-1.5 w-1/2 bg-gray-50 rounded-full" />
+                                                </div>
+                                            </div>
+                                        ))}
+                                         <div className="absolute -bottom-4 right-0 bg-accent text-white px-4 py-2 rounded-lg text-xs font-bold shadow-lg shadow-accent/20">
+                                             Draft Generated
+                                         </div>
+                                    </div>
+                                )}
                                 
                                 {/* Decorators */}
-                                <div className="absolute top-12 right-12 w-3 h-3 rounded-full bg-black/5" />
-                                <div className="absolute bottom-12 left-12 w-3 h-3 rounded-full bg-black/5" />
+                                <div className="absolute top-6 right-6 w-2 h-2 rounded-full bg-black/5" />
+                                <div className="absolute bottom-6 left-6 w-2 h-2 rounded-full bg-black/5" />
                             </motion.div>
                         </div>
                     </motion.div>

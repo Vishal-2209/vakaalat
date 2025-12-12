@@ -69,7 +69,7 @@ export default function AboutPage() {
                     {
                         icon: <Target className="w-8 h-8 text-white" />,
                         color: "bg-red-500",
-                        title: "Lawyer-Obssessed",
+                        title: "Lawyer-Obsessed",
                         description: "We don't build features. We solve problems. If it doesn't help a lawyer save time, it doesn't exist."
                     },
                     {
@@ -102,8 +102,45 @@ export default function AboutPage() {
                 ))}
             </div>
         </div>
+
+        {/* Our Reach / Impact */}
+        <div className="mb-32 glass-card p-12 md:p-20 rounded-[3rem] text-center relative overflow-hidden">
+             <div className="relative z-10">
+                 <h2 className="text-3xl md:text-5xl font-bold mb-12">Building for <span className="text-accent">Bharat</span></h2>
+                 <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
+                     <div>
+                         <div className="text-4xl md:text-6xl font-bold text-foreground mb-2">25+</div>
+                         <div className="text-foreground/50 font-medium">High Courts</div>
+                     </div>
+                     <div>
+                         <div className="text-4xl md:text-6xl font-bold text-foreground mb-2">600+</div>
+                         <div className="text-foreground/50 font-medium">District Courts</div>
+                     </div>
+                     <div>
+                         <div className="text-4xl md:text-6xl font-bold text-foreground mb-2">12</div>
+                         <div className="text-foreground/50 font-medium">Languages</div>
+                     </div>
+                     <div>
+                         <div className="text-4xl md:text-6xl font-bold text-accent mb-2">1M+</div>
+                         <div className="text-foreground/50 font-medium">Judgments</div>
+                     </div>
+                 </div>
+             </div>
+             {/* Background Decoration */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-r from-accent/5 to-transparent rounded-full blur-3xl -z-0 pointer-events-none" />
+        </div>
+
+        {/* Why Vakaalat Statement */}
+        <div className="max-w-4xl mx-auto text-center mb-20">
+            <h2 className="text-3xl md:text-4xl font-bold mb-8">Why Vakaalat?</h2>
+            <p className="text-xl text-foreground/70 leading-relaxed">
+                The legal profession is built on precedent, but it shouldn't be trapped by it. 
+                We believe that technology shouldn't just digitize old habits—it should unlock new possibilities. 
+                Vakaalat is our commitment to giving Indian advocates the superpowers they deserve.
+            </p>
+        </div>
         
-        <TeamSection />
+        {/* <TeamSection /> - Hidden per user request */}
 
       </div>
 

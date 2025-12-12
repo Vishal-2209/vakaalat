@@ -7,7 +7,7 @@ const steps = [
   {
     icon: <MessageSquare className="w-8 h-8" />,
     title: "1. Law Connect",
-    description: "Start by managing your client relationships. Handle intake, messaging, and auto-updates from day one."
+    description: "Get matched with verified clients and let them book consultations directly. No back-and-forth."
   },
   {
     icon: <User className="w-8 h-8" />,
@@ -44,7 +44,7 @@ export function HowItWorksSection() {
             </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 rounded-3xl bg-foreground/5 p-8 border border-foreground/10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {steps.map((step, index) => (
                 <motion.div
                     key={index}
@@ -52,17 +52,17 @@ export function HowItWorksSection() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
-                    className="relative"
+                    className="relative glass-card p-8 rounded-3xl group hover:-translate-y-1 transition-transform duration-300"
                 >
-                    <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center text-white mb-6 mx-auto lg:mx-0">
+                    <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center text-white mb-6 mx-auto lg:mx-0 shadow-lg shadow-accent/20 group-hover:scale-110 transition-transform duration-300">
                         {step.icon}
                     </div>
                     <h3 className="text-xl font-bold text-foreground mb-3 text-center lg:text-left">{step.title}</h3>
-                    <p className="text-foreground/50 text-sm leading-relaxed text-center lg:text-left">{step.description}</p>
+                    <p className="text-foreground/60 text-sm leading-relaxed text-center lg:text-left">{step.description}</p>
                     
                     {/* Connector Line (Desktop Only) */}
                     {index < steps.length - 1 && (
-                        <div className="hidden lg:block absolute top-8 left-20 w-[calc(100%-2rem)] h-[1px] bg-gradient-to-r from-accent/50 to-transparent" />
+                        <div className="hidden lg:block absolute top-[4.5rem] -right-4 w-8 h-[2px] bg-gradient-to-r from-accent/30 to-transparent z-10" />
                     )}
                 </motion.div>
             ))}
