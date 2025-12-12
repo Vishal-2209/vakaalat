@@ -53,7 +53,7 @@ export function ShareButtons({ title }: ShareButtonsProps) {
             <Button 
                 variant="ghost" 
                 size="sm" 
-                className="w-10 h-10 p-0 rounded-full bg-white/5 hover:bg-accent hover:text-black transition-colors"
+                className="w-10 h-10 p-0 rounded-full bg-foreground/5 hover:bg-accent hover:text-black transition-colors"
                 onClick={shareToTwitter}
                 title="Share to Twitter"
             >
@@ -62,7 +62,7 @@ export function ShareButtons({ title }: ShareButtonsProps) {
             <Button 
                 variant="ghost" 
                 size="sm" 
-                className="w-10 h-10 p-0 rounded-full bg-white/5 hover:bg-accent hover:text-black transition-colors"
+                className="w-10 h-10 p-0 rounded-full bg-foreground/5 hover:bg-accent hover:text-black transition-colors"
                 onClick={shareToLinkedIn}
                 title="Share to LinkedIn"
             >
@@ -71,7 +71,7 @@ export function ShareButtons({ title }: ShareButtonsProps) {
             <Button 
                 variant="ghost" 
                 size="sm" 
-                className="w-10 h-10 p-0 rounded-full bg-white/5 hover:bg-accent hover:text-black transition-colors"
+                className="w-10 h-10 p-0 rounded-full bg-foreground/5 hover:bg-accent hover:text-black transition-colors"
                 onClick={shareToFacebook}
                 title="Share to Facebook"
             >
@@ -80,7 +80,7 @@ export function ShareButtons({ title }: ShareButtonsProps) {
             <Button 
                 variant="ghost" 
                 size="sm" 
-                className="w-10 h-10 p-0 rounded-full bg-white/5 hover:bg-accent hover:text-black transition-colors relative"
+                className="w-10 h-10 p-0 rounded-full bg-foreground/5 hover:bg-accent hover:text-black transition-colors relative"
                 onClick={copyToClipboard}
                 title="Copy Link"
             >

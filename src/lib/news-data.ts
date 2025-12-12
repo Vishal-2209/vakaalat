@@ -11,7 +11,8 @@ export interface NewsPost {
   date: string;
   author: string;
   category: string;
-  link?: string; // Optional external link
+  image?: string; // New field for card image
+  link?: string;
   isExternal?: boolean;
 }
 
@@ -26,10 +27,44 @@ const RSS_FEEDS = [
 import * as cheerio from 'cheerio';
 import { unstable_cache } from 'next/cache';
 
+// Helper to fetch OG Image (cached)
+const getOgImage = unstable_cache(
+    async (url: string): Promise<string | null> => {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s fast timeout
+            
+            const response = await fetch(url, {
+                headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' },
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+
+            if (!response.ok) return null;
+            
+            // Read first 15kb which usually contains meta tags
+            // Note: response.text() reads whole body, we can't easily partial read with fetch in Node env without streams
+            // For simplicity and Vercel compatibility, just read text but maybe limit if possible. 
+            // In Node 18+ fetch, we can just read.
+            const html = await response.text();
+            
+            // Simple regex for speed, avoid full parser for just one tag
+            const ogMatch = html.match(/<meta[^>]+property="og:image"[^>]+content="([^"]+)"/i) || 
+                            html.match(/<meta[^>]+name="twitter:image"[^>]+content="([^"]+)"/i);
+            
+            return ogMatch ? ogMatch[1] : null;
+        } catch (e) {
+            return null;
+        }
+    },
+    ['og-image-cache'],
+    { revalidate: 86400, tags: ['og-image'] }
+);
+
 // Internal fetching function
 async function fetchNewsData(): Promise<NewsPost[]> {
   // ... (existing implementation)
-    // 1. Fetch Local News
+    // 1. Fetch local news... (keep existing)
   let localNews: NewsPost[] = [];
   try {
     const data = await fs.readFile(DATA_FILE, 'utf-8');
@@ -40,6 +75,15 @@ async function fetchNewsData(): Promise<NewsPost[]> {
 
   // 2. Fetch External News (RSS)
   const parser = new Parser({
+      customFields: {
+          item: [
+            ['media:content', 'mediaContent'],
+            ['media:thumbnail', 'mediaThumbnail'],
+            ['enclosure', 'enclosure'],
+            ['image', 'rssImage'],
+            ['content:encoded', 'contentEncoded']
+          ]
+      },
       headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
       }
@@ -48,10 +92,10 @@ async function fetchNewsData(): Promise<NewsPost[]> {
 
   const feedPromises = RSS_FEEDS.map(async (feed) => {
       try {
-          // console.log(`Fetching RSS from ${feed.url}...`); // Reduced logging
           const feedData = await parser.parseURL(feed.url);
-          // console.log(`Fetched ${feedData.items.length} items from ${feed.source}`);
-          return feedData.items.map(item => {
+          
+          // Process items in parallel to fetch OG images if needed
+          const itemPromises = feedData.items.map(async (item) => {
               // Create a consistent ID and Slug
               const slug = item.title 
                   ? item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') 
@@ -59,24 +103,60 @@ async function fetchNewsData(): Promise<NewsPost[]> {
               
               const date = item.pubDate ? new Date(item.pubDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
 
+              // Try to find an image
+              let imageUrl = '';
+              
+              // 1. Check Media Content / Thumbnail (common in RSS)
+              if (item.mediaContent && item.mediaContent['$'] && item.mediaContent['$'].url) {
+                  imageUrl = item.mediaContent['$'].url;
+              } else if (item.mediaThumbnail && item.mediaThumbnail['$'] && item.mediaThumbnail['$'].url) {
+                  imageUrl = item.mediaThumbnail['$'].url;
+              } else if (item.enclosure && item.enclosure.url && item.enclosure.type?.startsWith('image')) {
+                 imageUrl = item.enclosure.url;
+              } else if (item.rssImage) { 
+                 imageUrl = item.rssImage;
+              }
+              
+              // 2. Extract from Content using Cheerio (handles unescaping)
+              if (!imageUrl && (item.content || item.contentEncoded)) {
+                  const content = item.contentEncoded || item.content;
+                  const $ = cheerio.load(content);
+                  const img = $('img').first();
+                  if (img.length > 0) {
+                      imageUrl = img.attr('src') || '';
+                  }
+              }
+
+              // 3. Fallback: Fetch OG Image from the link (Limit to top items or all? Cache handles it)
+              // Only do this if we really don't have an image
+              if (!imageUrl && item.link) {
+                  // Wait for it? Yes, we need it for this render
+                  imageUrl = await getOgImage(item.link) || '';
+              }
+
               return {
                   id: item.guid || item.link || slug,
                   title: item.title || 'No Title',
                   slug: slug,
                   excerpt: item.contentSnippet || item.content || '',
-                  content: item.content || item.contentSnippet || '', // Use snippet as placeholder content
+                  content: item.content || item.contentSnippet || '', 
                   date: date,
-                  author: feed.source, // Use source name as author
+                  author: feed.source, 
                   category: 'Legal News',
+                  image: imageUrl,
                   link: item.link,
                   isExternal: true
               } as NewsPost;
           });
+
+          return await Promise.all(itemPromises);
+
       } catch (error) {
           console.error(`Failed to fetch RSS from ${feed.url}`, error);
           return [];
       }
   });
+
 
   const feedResults = await Promise.all(feedPromises);
   feedResults.forEach(items => externalNews.push(...items));

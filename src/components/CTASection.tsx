@@ -24,7 +24,7 @@ export function CTASection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-xl text-white/60 max-w-2xl mx-auto mb-10"
+          className="text-xl text-foreground/60 max-w-2xl mx-auto mb-10"
         >
           Join the future of legal tech tailored for Indian advocates. Simplify your workflow today.
         </motion.p>

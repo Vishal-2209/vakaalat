@@ -2,124 +2,343 @@
 
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { motion } from "framer-motion";
-import { Users, Lock, Zap } from 'lucide-react';
+import { motion, useScroll, useTransform, Variants } from "framer-motion";
+import { Users, Lock, Zap, ArrowRight, GitMerge, Layers, Boxes, XCircle, CheckCircle } from 'lucide-react';
+import { useRef } from "react";
+
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
+
+const scaleIn: Variants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
+};
 
 export default function MethodologyPage() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+
   return (
-    <main className="min-h-screen bg-background text-foreground overflow-x-hidden pt-24">
+    <main className="min-h-screen bg-background text-foreground overflow-x-hidden pt-32 pb-20" ref={containerRef}>
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative py-24 px-6 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
+      <section className="relative py-20 px-6 overflow-hidden">
+        <motion.div 
+            style={{ y }} 
+            className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" 
+        />
         
-        <div className="container mx-auto relative z-10">
+        <div className="container mx-auto relative z-10 text-center max-w-5xl">
           <motion.div
-             initial={{ opacity: 0, y: 30 }}
-             animate={{ opacity: 1, y: 0 }}
-             className="max-w-4xl"
+             initial="hidden"
+             animate="visible"
+             variants={staggerContainer}
           >
-            <div className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent font-medium text-sm mb-6 border border-accent/20">
-              Our Methodology
-            </div>
-            <h1 className="text-4xl md:text-7xl font-bold tracking-tighter mb-8 leading-tight">
-              A Unified Ecosystem <br />
-              <span className="text-white/40">Not Just Another App.</span>
-            </h1>
-            <p className="text-xl text-white/60 max-w-2xl leading-relaxed">
-              We don't just digitize old habits; we engineer new efficiencies. Our methodology is built on three core pillars designed specifically for the Indian legal context.
-            </p>
+            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/5 text-accent font-bold text-sm mb-8 border border-accent/10">
+              <Zap className="w-4 h-4 fill-current" />
+              The Engine Room
+            </motion.div>
+            <motion.h1 variants={fadeInUp} className="text-6xl md:text-8xl font-bold tracking-tighter mb-8 leading-tight">
+              Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-blue-600">Methodology</span>
+            </motion.h1>
+            <motion.p variants={fadeInUp} className="text-xl md:text-2xl text-foreground/60 max-w-2xl mx-auto leading-relaxed font-medium">
+              We don't just build apps. We engineer operational flows that eliminate friction from the modern legal practice.
+            </motion.p>
           </motion.div>
         </div>
       </section>
 
-      {/* Core Pillars */}
-      <section className="py-24 border-t border-white/5">
+      {/* The Reality Check (Problem vs Solution) */}
+      <section className="py-20">
+          <div className="container mx-auto px-6 max-w-6xl">
+              <div className="grid md:grid-cols-2 gap-12 bg-card rounded-[3rem] p-10 md:p-16 border border-black/5 shadow-2xl relative overflow-hidden group">
+                  <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-400 via-transparent to-green-500" />
+                  
+                  {/* The Old Way */}
+                  <motion.div 
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={staggerContainer}
+                    className="space-y-8"
+                  >
+                      <motion.h3 variants={fadeInUp} className="text-3xl font-bold text-foreground/40 mb-8 flex items-center gap-4">
+                          <XCircle className="w-8 h-8 text-red-400" />
+                          The Old Way
+                      </motion.h3>
+                      <ul className="space-y-6">
+                         {[
+                             "Fragmented WhatsApp threads",
+                             "Lost documents in email chains",
+                             "Manual invoice tracking",
+                             "Chaotic court dates tracking"
+                         ].map((item, i) => (
+                             <motion.li variants={fadeInUp} key={i} className="flex items-center gap-4 text-lg text-foreground/50 font-medium line-through decoration-red-400/30">
+                                 <div className="w-2 h-2 rounded-full bg-red-400/50" />
+                                 {item}
+                             </motion.li>
+                         ))}
+                      </ul>
+                  </motion.div>
+
+                  {/* The Vakaalat Way */}
+                   <motion.div 
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true, margin: "-100px" }}
+                      variants={staggerContainer}
+                      className="space-y-8 md:border-l md:border-black/5 md:pl-12"
+                    >
+                      <motion.h3 variants={fadeInUp} className="text-3xl font-bold text-foreground mb-8 flex items-center gap-4">
+                          <CheckCircle className="w-8 h-8 text-green-500" />
+                          The Vakaalat Way
+                      </motion.h3>
+                      <ul className="space-y-6">
+                         {[
+                             "Centralized, Context-Aware Chat",
+                             "Smart Document Vault & Search",
+                             "Automated Billing & Reminders",
+                             "Real-time Court Sync"
+                         ].map((item, i) => (
+                             <motion.li variants={fadeInUp} key={i} className="flex items-center gap-4 text-lg text-foreground font-bold">
+                                 <div className="w-6 h-6 rounded-full bg-green-500/10 flex items-center justify-center text-green-600">
+                                     <CheckCircle className="w-4 h-4" />
+                                 </div>
+                                 {item}
+                             </motion.li>
+                         ))}
+                      </ul>
+                  </motion.div>
+              </div>
+          </div>
+      </section>
+
+      {/* The Visual Pipeline */}
+      <section className="py-24 relative">
+          <div className="container mx-auto px-6">
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-4xl md:text-5xl font-bold text-center mb-24"
+              >
+                  The Digital Pipeline
+              </motion.h2>
+              
+            {/* Connecting Line - Animated */}
+            <motion.div 
+                className="hidden lg:block absolute left-1/2 top-40 bottom-20 w-0.5 bg-accent/20 -z-10 origin-top"
+                initial={{ scaleY: 0 }}
+                whileInView={{ scaleY: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, ease: "easeInOut" }}
+            />
+
+            <div className="space-y-32">
+                {[
+                    {
+                        step: "01",
+                        title: "Intake & Connection",
+                        subtitle: "Law Connect",
+                        description: "The journey begins with client intake. We've replaced the chaotic notes with a structured communication layer that automatically sorts and prioritizes incoming requests.",
+                        icon: <Users className="w-8 h-8 text-white" />,
+                        color: "bg-accent",
+                        gradient: "from-violet-500 to-indigo-500"
+                    },
+                    {
+                        step: "02",
+                        title: "Management & Profile",
+                        subtitle: "Law Profile",
+                        description: "Data flows directly into the management layer. Cases are tracked, deadlines are automated, and successful outcomes automatically update your public reputation profile.",
+                        icon: <Layers className="w-8 h-8 text-white" />,
+                        color: "bg-yellow-400",
+                        gradient: "from-orange-400 to-yellow-500"
+                    },
+                    {
+                        step: "03",
+                        title: "Execution & Drafting",
+                        subtitle: "Law Draft",
+                        description: "Finally, the system uses stored case data to auto-draft legal documents. No manual re-entry. What used to take 3 hours now takes 15 minutes.",
+                        icon: <GitMerge className="w-8 h-8 text-white" />,
+                        color: "bg-blue-500",
+                        gradient: "from-blue-500 to-cyan-500"
+                    }
+                ].map((step, i) => (
+                    <motion.div 
+                        key={i}
+                        initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
+                        className={`flex flex-col lg:flex-row gap-16 items-center ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
+                    >
+                        <div className="flex-1 text-center lg:text-left">
+                            <motion.div 
+                                initial={{ opacity: 0, scale: 0.5 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.2, duration: 0.5 }}
+                                className="text-8xl font-black text-foreground/5 mb-4 leading-none"
+                            >
+                                {step.step}
+                            </motion.div>
+                            <div className={`inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-white border border-black/5 shadow-sm`}>
+                                <span className={`w-2 h-2 rounded-full ${step.color} animate-pulse`}></span>
+                                {step.subtitle}
+                            </div>
+                            <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">{step.title}</h2>
+                            <p className="text-xl text-foreground/60 leading-relaxed max-w-lg mx-auto lg:mx-0">
+                                {step.description}
+                            </p>
+                        </div>
+
+                        <div className="relative w-full lg:w-1/2 flex justify-center group">
+                            <motion.div 
+                                whileHover={{ scale: 1.05, rotate: 2 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                className="w-full max-w-md aspect-square rounded-[3rem] bg-gradient-to-br from-white to-subtle border border-black/5 shadow-2xl flex flex-col items-center justify-center relative z-10 p-8 overflow-hidden"
+                            >
+                                <div className={`absolute inset-0 bg-gradient-to-br ${step.gradient} opacity-5 rounded-[3rem]`} />
+                                
+                                {/* Dynamic Mockup Content Based on Step */}
+                                {i === 0 && ( // Intake - Search UI
+                                    <div className="w-full space-y-4 relative z-10">
+                                        <div className="bg-white p-4 rounded-2xl shadow-sm border border-black/5 flex items-center gap-3">
+                                             <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
+                                                 <Users className="w-4 h-4" />
+                                             </div>
+                                             <div className="h-2 w-24 bg-gray-100 rounded-full" />
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <div className="px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-bold">New Lead</div>
+                                            <div className="px-3 py-1 rounded-full bg-gray-100 text-gray-400 text-xs font-bold">Archive</div>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-2xl shadow-md border border-accent/20 flex gap-4 items-center">
+                                            <div className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                                                <CheckCircle className="w-5 h-5" />
+                                            </div>
+                                            <div>
+                                                <div className="text-xs font-bold text-gray-900">Consultation Booked</div>
+                                                <div className="text-[10px] text-gray-400">Tomorrow, 10:00 AM</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {i === 1 && ( // Management - Stats
+                                    <div className="w-full relative z-10 flex flex-col items-center gap-6">
+                                         <div className="relative w-32 h-32 flex items-center justify-center">
+                                             <svg className="w-full h-full transform -rotate-90">
+                                                 <circle cx="64" cy="64" r="60" stroke="#f1f5f9" strokeWidth="8" fill="transparent" />
+                                                 <circle cx="64" cy="64" r="60" stroke="currentColor" strokeWidth="8" fill="transparent" strokeDasharray="377" strokeDashoffset="94" className="text-accent" />
+                                             </svg>
+                                             <div className="absolute text-3xl font-bold">75%</div>
+                                         </div>
+                                         <div className="w-full bg-white p-4 rounded-2xl shadow-sm border border-black/5">
+                                             <div className="flex justify-between items-center mb-2">
+                                                 <div className="text-xs font-bold text-gray-500">NEXT HEARING</div>
+                                                 <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                                             </div>
+                                             <div className="text-sm font-bold">High Court, Hall 4</div>
+                                         </div>
+                                    </div>
+                                )}
+
+                                {i === 2 && ( // Execution - List
+                                    <div className="w-full space-y-3 relative z-10">
+                                        {[1, 2, 3].map((_, idx) => (
+                                            <div key={idx} className="bg-white p-3 rounded-xl shadow-sm border border-black/5 flex items-center gap-3">
+                                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center ${idx === 0 ? 'bg-accent border-accent text-white' : 'border-gray-200'}`}>
+                                                    {idx === 0 && <CheckCircle className="w-3 h-3" />}
+                                                </div>
+                                                <div className="flex-1 space-y-1">
+                                                    <div className="h-2 w-3/4 bg-gray-100 rounded-full" />
+                                                    <div className="h-1.5 w-1/2 bg-gray-50 rounded-full" />
+                                                </div>
+                                            </div>
+                                        ))}
+                                         <div className="absolute -bottom-4 right-0 bg-accent text-white px-4 py-2 rounded-lg text-xs font-bold shadow-lg shadow-accent/20">
+                                             Draft Generated
+                                         </div>
+                                    </div>
+                                )}
+                                
+                                {/* Decorators */}
+                                <div className="absolute top-6 right-6 w-2 h-2 rounded-full bg-black/5" />
+                                <div className="absolute bottom-6 left-6 w-2 h-2 rounded-full bg-black/5" />
+                            </motion.div>
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
+          </div>
+      </section>
+
+      {/* Core Pillars Grid */}
+      <section className="py-24 border-t border-black/5 bg-foreground/5">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                className="text-center mb-20"
+            >
+                <h2 className="text-3xl md:text-5xl font-bold mb-6">Unshakable Principles</h2>
+                <p className="text-xl text-foreground/60 max-w-2xl mx-auto">The foundation upon which we build every line of code.</p>
+            </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                icon: <Users className="w-8 h-8 text-accent" />,
-                title: "Lawyer-Centric Design",
-                description: "We build for the chaotic reality of courts and clerks, not for an idealized western law firm. Our tools work where you work—offline, on mobile, and on the go."
+                icon: <Boxes className="w-8 h-8 text-accent" />,
+                title: "Modular Architecture",
+                description: "Our tools work independently but perform better together. Start with one, expand to all."
               },
               {
                 icon: <Zap className="w-8 h-8 text-accent" />,
-                title: "Practical Efficiency",
-                description: "Lawyers hate friction. We strip away over-engineered features to focus on speed. If it doesn't save you time in 3 clicks, we don't build it."
+                title: "Zero-Friction Design",
+                description: "We count clicks. If a task takes more than 3 user interactions, we send it back to the whiteboard."
               },
               {
                 icon: <Lock className="w-8 h-8 text-accent" />,
                 title: "Data Sovereignty",
-                description: "Your client data is your most valuable asset. We employ military-grade encryption and ensure strict data isolation so your practice remains confidential."
+                description: "Your client data stays yours. We use siloed database structures to ensure maximum privacy."
               }
             ].map((item, i) => (
               <motion.div 
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.2 }}
+                transition={{ duration: 0.5, delay: i * 0.15 }}
                 viewport={{ once: true }}
-                className="space-y-6"
+                whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                className="group p-10 bg-background rounded-[2.5rem] border border-black/5 hover:border-accent/30 hover:shadow-xl hover:shadow-accent/5 relative overflow-hidden"
               >
-                <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
+                <div className="w-16 h-16 rounded-2xl bg-accent/5 flex items-center justify-center border border-black/5 mb-8 relative z-10 group-hover:scale-110 transition-transform duration-500">
                   {item.icon}
                 </div>
-                <h3 className="text-2xl font-bold">{item.title}</h3>
-                <p className="text-white/60 leading-relaxed">
+                <h3 className="text-2xl font-bold mb-4 tracking-tight relative z-10">{item.title}</h3>
+                <p className="text-foreground/60 leading-relaxed text-lg relative z-10">
                   {item.description}
                 </p>
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Technical Integration Section */}
-      <section className="py-24 bg-white/5 px-6">
-        <div className="container mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <h2 className="text-3xl md:text-5xl font-bold mb-8">Seamless Integration</h2>
-                    <div className="space-y-8">
-                        {/* Integration Point 1 */}
-                        <div className="flex gap-6">
-                            <div className="w-12 h-12 rounded-full bg-accent/10 flex-shrink-0 flex items-center justify-center text-accent font-bold text-lg">1</div>
-                            <div>
-                                <h3 className="text-xl font-bold mb-2">Law Connect</h3>
-                                <p className="text-white/60">Handle client intake and communication. Data flows automatically into your case workspace.</p>
-                            </div>
-                        </div>
-                        {/* Integration Point 2 */}
-                        <div className="flex gap-6">
-                            <div className="w-12 h-12 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-white/40 font-bold text-lg border border-dashed border-white/20">2</div>
-                            <div>
-                                <h3 className="text-xl font-bold mb-2 text-white/50">Law Profile (Coming Soon)</h3>
-                                <p className="text-white/40">Your case history and performance metrics update your digital profile automatically, attracting better clients.</p>
-                            </div>
-                        </div>
-                         {/* Integration Point 3 */}
-                         <div className="flex gap-6">
-                            <div className="w-12 h-12 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center text-white/40 font-bold text-lg border border-dashed border-white/20">3</div>
-                            <div>
-                                <h3 className="text-xl font-bold mb-2 text-white/50">Law Draft (Ideation)</h3>
-                                <p className="text-white/40">AI-powered drafting will pull details directly from your case files, eliminating manual data entry.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="relative">
-                    <div className="aspect-square rounded-3xl bg-black border border-white/10 p-8 flex items-center justify-center relative overflow-hidden group">
-                        <img src="/images/core.png" alt="Vakaalat Core" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-                        <div className="text-center relative z-10">
-                            <h4 className="text-2xl font-bold text-white mb-2">The Vakaalat Core</h4>
-                            <p className="text-white/50 text-sm">Centralized Data & Logic Layer</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
       </section>
 
