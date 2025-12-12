@@ -86,7 +86,7 @@ const jsonLd = {
       "logo": "https://www.vakaalat.in/icon.png",
       "sameAs": [
         "https://twitter.com/vakaalatofficial",
-        "https://linkedin.com/company/vakaalat-in"
+        "https://linkedin.com/company/vakaalat-one"
       ],
       "contactPoint": {
         "@type": "ContactPoint",
