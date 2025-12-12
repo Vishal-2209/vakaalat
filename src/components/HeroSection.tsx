@@ -33,7 +33,7 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           className="max-w-2xl mx-auto text-lg text-white/50 mb-10 leading-relaxed"
         >
-          Empowering lawyers with reliable, efficient, and practical tools to manage cases, clients, and workflow without dependency or delays.
+          Manage cases, clients, documents, and hearings in one platform. Secure digital workspace for advocates, law firms, and legal professionals.
         </motion.p>
 
         <motion.div 

@@ -4,34 +4,34 @@ import { motion } from 'framer-motion';
 import { Zap, Smartphone, ShieldCheck, Globe, Users, Briefcase } from 'lucide-react';
 
 const features = [
-  {
-    title: "Built for Indian Lawyers",
-    description: "Designed for the messy and chaotic reality of Indian courts, clerks, and clients. Not a generic western clone.",
+{
+    title: "Best Lawyer Management Software",
+    description: "Designed for the messy and chaotic reality of Indian courts. Manage your entire practice from a single dashboard.",
     icon: <Users className="w-6 h-6" />
   },
   {
-    title: "Practical, Not Over-Engineered",
-    description: "Streamlined for speed and minimal learning curve. Tools that work every day without friction.",
+    title: "Law Firm Automation Tool",
+    description: "Automate repetitive tasks and streamline your workflow. Reduce manual errors and focus on winning cases.",
     icon: <Zap className="w-6 h-6" />
   },
   {
-    title: "Reduces Dependency",
-    description: "Makes you independent of clerks and manual systems. Go digital, stay in control.",
+    title: "Advocate Case Tracking App",
+    description: "Track hearing dates, orders, and case status updates automatically. Never miss a deadline again.",
     icon: <Briefcase className="w-6 h-6" />
   },
   {
-    title: "Unified Ecosystem",
-    description: "Solves the entire workflow end-to-end in one place. No need for multiple apps.",
+    title: "Legal Workflow Software",
+    description: "A unified ecosystem for document management, client intake, and billing. No need for multiple apps.",
     icon: <Globe className="w-6 h-6" />
   },
   {
-    title: "Strong Security",
-    description: "Encrypted storage and controlled access with stricter compliance than most generic SaaS tools.",
+    title: "Secure Client Data",
+    description: "Bank-grade encryption for all your case files and client communications. Your data stays private.",
     icon: <ShieldCheck className="w-6 h-6" />
   },
   {
-    title: "Offline-Friendly Design",
-    description: "Handles weak connectivity common in courts without breaking your workflow.",
+    title: "Mobile-First for Advocates",
+    description: "Access your cases on the go. Handles weak connectivity in court complexes seamlessly.",
     icon: <Smartphone className="w-6 h-6" />
   }
 ];
