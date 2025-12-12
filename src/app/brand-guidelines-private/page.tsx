@@ -1,7 +1,7 @@
 
 import { Metadata } from 'next';
 import { Button } from '@/components/Button';
-import { Share2, Facebook, Twitter, Linkedin, Check, ArrowRight, Play, Calendar, User, Mail, Globe } from 'lucide-react';
+import { Share2, Facebook, Twitter, Linkedin, Check, ArrowRight, Play, Calendar, User, Mail, Globe, Shield, MessageSquare, Layers } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Brand Guidelines | Vakaalat',
@@ -37,6 +37,15 @@ export default function BrandGuidelinesPage() {
     { name: 'Tiny', class: 'text-xs font-bold uppercase tracking-wider', size: '12px / 0.75rem', weight: '700 (Bold)' },
   ];
 
+  const spacing = [
+      { name: 'xs', class: 'w-4 h-4', label: '1rem (16px)' },
+      { name: 'sm', class: 'w-6 h-6', label: '1.5rem (24px)' },
+      { name: 'md', class: 'w-8 h-8', label: '2rem (32px)' },
+      { name: 'lg', class: 'w-12 h-12', label: '3rem (48px)' },
+      { name: 'xl', class: 'w-16 h-16', label: '4rem (64px)' },
+      { name: '2xl', class: 'w-24 h-24', label: '6rem (96px)' },
+  ];
+
   return (
     <main className="min-h-screen bg-background pt-32 pb-20">
       <div className="container mx-auto px-6 max-w-7xl space-y-32">
@@ -57,7 +66,7 @@ export default function BrandGuidelinesPage() {
         {/* Brand Identity / Logos */}
         <section id="identity" className="scroll-mt-32">
             <h2 className="text-3xl font-bold mb-10 pb-4 border-b border-black/5 flex items-center gap-4">
-                01. Brand Identity <span className="text-sm font-normal text-foreground/40 mt-1">Logo & Marks</span>
+                01. Identity <span className="text-sm font-normal text-foreground/40 mt-1">Logo & Marks</span>
             </h2>
             <div className="grid lg:grid-cols-2 gap-12">
                 
@@ -73,8 +82,7 @@ export default function BrandGuidelinesPage() {
                         </div>
                     </div>
                     <p className="text-sm text-foreground/60">
-                        Used for main headers, navigation, and primary branding. The layout consists of the logomark followed by the wordmark "Vakaalat". 
-                        The period <span className="text-accent font-bold">.</span> is always rendered in Accent Purple.
+                        The primary brand signature. Use on light backgrounds. The period is always <strong>Accent Purple</strong>.
                     </p>
                 </div>
 
@@ -90,21 +98,13 @@ export default function BrandGuidelinesPage() {
                             </span>
                         </div>
                     </div>
-                </div>
-
-                {/* Favicon / Icon */}
-                <div className="space-y-6">
-                    <h3 className="text-lg font-bold text-foreground/80">Logomark (Icon)</h3>
-                     <div className="bg-card p-16 rounded-[2.5rem] flex items-center justify-center border border-black/5 min-h-[300px]">
-                        <img src="/icon.png" alt="Vakaalat Icon" className="h-32 w-32 object-contain" />
-                    </div>
                     <p className="text-sm text-foreground/60">
-                        The standalone "V" mark. Used for favicons, app icons, and social media avatars.
+                         For dark backgrounds. The text becomes white, but the period remains <strong>Accent Purple</strong> (simulated here).
                     </p>
                 </div>
 
                  <div className="space-y-6">
-                    <h3 className="text-lg font-bold text-foreground/80">Construction</h3>
+                    <h3 className="text-lg font-bold text-foreground/80">Clear Space</h3>
                      <div className="bg-white p-16 rounded-[2.5rem] flex items-center justify-center border border-black/5 border-dashed min-h-[300px] relative overflow-hidden">
                         {/* Grid lines simulation */}
                         <div className="absolute inset-0 grid grid-cols-6 grid-rows-6 opacity-10 pointer-events-none">
@@ -116,19 +116,59 @@ export default function BrandGuidelinesPage() {
                                 Vakaalat<span className="text-accent">.</span>
                             </span>
                         </div>
+                        <div className="absolute top-8 left-8 border-l border-t border-accent h-4 w-4"></div>
+                        <div className="absolute top-8 right-8 border-r border-t border-accent h-4 w-4"></div>
+                        <div className="absolute bottom-8 left-8 border-l border-b border-accent h-4 w-4"></div>
+                        <div className="absolute bottom-8 right-8 border-r border-b border-accent h-4 w-4"></div>
                     </div>
                      <p className="text-sm text-foreground/60">
-                        Maintain clear space equal to the height of the "V" icon around the entire logo composition.
+                        Maintain generous clear space around the logo to ensure legibility and impact.
                     </p>
                 </div>
 
             </div>
         </section>
 
+        {/* Tone of Voice */}
+        <section id="voice" className="scroll-mt-32">
+             <h2 className="text-3xl font-bold mb-10 pb-4 border-b border-black/5 flex items-center gap-4">
+                02. Tone of Voice <span className="text-sm font-normal text-foreground/40 mt-1">Communication Style</span>
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8">
+                <div className="bg-subtle p-8 rounded-[2rem] border border-black/5">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center text-accent mb-6">
+                        <Shield className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-3">Authoritative</h3>
+                    <p className="text-foreground/60 leading-relaxed">
+                        We speak with confidence and expertise. We are the system of record for legal professionals, so our language should be precise, accurate, and trustworthy.
+                    </p>
+                </div>
+                 <div className="bg-subtle p-8 rounded-[2rem] border border-black/5">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center text-accent mb-6">
+                        <MessageSquare className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-3">Professional</h3>
+                    <p className="text-foreground/60 leading-relaxed">
+                        We avoid slang and overly casual language. We are respectful of the legal profession's traditions while presenting a modern, forward-thinking solution.
+                    </p>
+                </div>
+                 <div className="bg-subtle p-8 rounded-[2rem] border border-black/5">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center text-accent mb-6">
+                        <Layers className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-3">Concise</h3>
+                    <p className="text-foreground/60 leading-relaxed">
+                        Lawyers value their time. We get straight to the point. Our copy is scannable, action-oriented, and devoid of unnecessary fluff.
+                    </p>
+                </div>
+            </div>
+        </section>
+
         {/* Typography */}
         <section id="typography" className="scroll-mt-32">
            <h2 className="text-3xl font-bold mb-10 pb-4 border-b border-black/5 flex items-center gap-4">
-                02. Typography <span className="text-sm font-normal text-foreground/40 mt-1">Geist Sans & Mono</span>
+                03. Typography <span className="text-sm font-normal text-foreground/40 mt-1">Geist Sans & Mono</span>
            </h2>
            <div className="grid lg:grid-cols-3 gap-12">
                
@@ -176,7 +216,7 @@ export default function BrandGuidelinesPage() {
         {/* Color Palette */}
         <section id="colors" className="scroll-mt-32">
           <h2 className="text-3xl font-bold mb-10 pb-4 border-b border-black/5 flex items-center gap-4">
-               03. Color Palette <span className="text-sm font-normal text-foreground/40 mt-1">Variables & Hex</span>
+               04. Color Palette <span className="text-sm font-normal text-foreground/40 mt-1">Variables & Hex</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {colors.map((color) => (
@@ -210,10 +250,58 @@ export default function BrandGuidelinesPage() {
           </div>
         </section>
 
+        {/* Layout System */}
+        <section id="layout" className="scroll-mt-32">
+             <h2 className="text-3xl font-bold mb-10 pb-4 border-b border-black/5 flex items-center gap-4">
+               05. Layout System <span className="text-sm font-normal text-foreground/40 mt-1">Spacing & Radius</span>
+            </h2>
+            <div className="grid md:grid-cols-3 gap-12">
+                
+                {/* Spacing */}
+                <div className="md:col-span-1 space-y-6">
+                    <h3 className="text-xl font-bold">Spacing Scale</h3>
+                    <div className="space-y-4">
+                        {spacing.map((space) => (
+                            <div key={space.name} className="flex items-center gap-4">
+                                <div className={`${space.class} bg-accent/20 rounded-md border border-accent flex-shrink-0`} />
+                                <div>
+                                    <div className="font-mono text-sm font-bold text-foreground">spacing-{space.name}</div>
+                                    <div className="font-mono text-xs text-foreground/40">{space.label}</div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Radius */}
+                <div className="md:col-span-1 space-y-6">
+                    <h3 className="text-xl font-bold">Border Radius</h3>
+                    <div className="space-y-6">
+                        <div className="bg-subtle border border-black/5 p-4 rounded-xl text-center text-sm font-mono">rounded-xl (12px)</div>
+                        <div className="bg-subtle border border-black/5 p-4 rounded-2xl text-center text-sm font-mono">rounded-2xl (16px)</div>
+                        <div className="bg-subtle border border-black/5 p-4 rounded-3xl text-center text-sm font-mono">rounded-3xl (24px)</div>
+                        <div className="bg-subtle border border-black/5 p-4 rounded-[2.5rem] text-center text-sm font-mono">rounded-[2.5rem] (40px)</div>
+                    </div>
+                    <p className="text-sm text-foreground/60 leading-relaxed mt-4">
+                        We use generous border radius to create a friendly, modern, and organic feel. Buttons typically use <code className="bg-subtle px-1 rounded">rounded-full</code>.
+                    </p>
+                </div>
+
+                 {/* Shadows */}
+                <div className="md:col-span-1 space-y-8">
+                     <h3 className="text-xl font-bold">Elevation</h3>
+                     <div className="bg-white p-6 rounded-2xl shadow-sm text-center text-sm font-mono border border-black/5">shadow-sm</div>
+                     <div className="bg-white p-6 rounded-2xl shadow-md text-center text-sm font-mono border border-black/5">shadow-md</div>
+                     <div className="bg-white p-6 rounded-2xl shadow-xl text-center text-sm font-mono border border-black/5">shadow-xl</div>
+                </div>
+
+            </div>
+        </section>
+
         {/* UI Library Mockups */}
         <section id="ui-library" className="scroll-mt-32">
             <h2 className="text-3xl font-bold mb-10 pb-4 border-b border-black/5 flex items-center gap-4">
-               04. UI Library <span className="text-sm font-normal text-foreground/40 mt-1">Components & Mockups</span>
+               06. UI Components <span className="text-sm font-normal text-foreground/40 mt-1">Mockups</span>
             </h2>
 
             <div className="space-y-16">
@@ -281,7 +369,7 @@ export default function BrandGuidelinesPage() {
                     {/* Forms & Inputs */}
                     <div className="space-y-8">
                          <h3 className="text-xl font-bold flex items-center gap-2">
-                             <span className="w-5 h-5 rounded border border-foreground/30"></span> Changes
+                             <span className="w-5 h-5 rounded border border-foreground/30"></span> Input States
                          </h3>
                          
                          <div className="bg-card p-8 rounded-[2rem] border border-black/5 space-y-6">
