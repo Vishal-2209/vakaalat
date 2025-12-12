@@ -34,8 +34,8 @@ export function Footer() {
           
           {/* Brand Column */}
           <div className="space-y-6">
-            <Link href="/" className="text-2xl font-bold tracking-tighter text-foreground block">
-              Vakaalat<span className="text-accent">.</span>
+            <Link href="/" className="block mb-4">
+              <img src="/logo.png" alt="Vakaalat Logo" className="h-20 w-auto object-contain" />
             </Link>
             <p className="text-foreground/60 leading-relaxed text-base">
               Simplifying legal services with intelligent technology and expert verification. A unified ecosystem for the modern advocate.

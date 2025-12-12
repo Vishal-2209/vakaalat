@@ -37,8 +37,8 @@ export function Navbar() {
           scrolled ? "glass shadow-sm" : "bg-transparent"
         )}
       >
-        <Link href="/" className="text-2xl font-extrabold tracking-tighter text-foreground z-50 flex items-center gap-1">
-          Vakaalat<span className="text-accent">.</span>
+        <Link href="/" className="flex items-center gap-2 z-50">
+          <img src="/logo.png" alt="Vakaalat Logo" className="h-20 w-auto object-contain" />
         </Link>
         
         {/* Desktop Menu */}
